@@ -1,0 +1,49 @@
+Menu System Improvements - Reversi Deluxe
+==========================================
+
+IMPLEMENTED ENHANCEMENTS:
+
+1. KEYBOARD NAVIGATION
+   - Press Alt to open menus
+   - Left/Right arrows: Navigate between menus
+   - Up/Down arrows: Navigate menu items
+   - Enter: Execute selected item
+   - Escape: Close menu
+
+2. VISUAL FEEDBACK IMPROVEMENTS
+   - Accent color highlight for keyboard-selected items
+   - Selection indicator (blue bar) on active menu
+   - Different visual states for:
+     * Mouse hover (lighter background)
+     * Keyboard selection (accent color + indicator bar)
+     * Active menu (underline indicator)
+   - Brighter text for selected items
+
+3. ENHANCED SELECTION
+   - Auto-skip disabled menu items
+   - Smooth cycling through menus and items
+   - Visual indicator shows which item will execute
+   - Clear separation between mouse and keyboard selection
+
+4. BETTER UX
+   - Menu state tracking (selected menu/item indices)
+   - Consistent behavior for mouse and keyboard
+   - Proper logging of menu navigation
+   - Error handling for menu actions
+
+KEYBOARD SHORTCUTS:
+- Alt: Open/activate menu system
+- Left/Right: Switch between menus
+- Up/Down: Navigate items
+- Enter: Select/execute item
+- Escape: Close menu
+
+MOUSE IMPROVEMENTS:
+- Hover shows lighter background
+- Click executes immediately
+- Outside click closes menu
+- Visual feedback on all interactions
+
+These improvements make menu navigation more accessible, especially
+for keyboard-only users and provide better visual feedback for all
+interaction methods.
