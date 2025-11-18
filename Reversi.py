@@ -1983,6 +1983,9 @@ class GameAnalysisDisplay:
         move_analyses = []
         critical_moments = []
 
+        board_size = self.game.board.size
+        max_index = board_size - 1
+
         # Create a simplified analysis for each move using available data
         for i, entry in enumerate(self.game.ui.move_history):
             # Create a simplified move analysis from available data
@@ -1993,10 +1996,18 @@ class GameAnalysisDisplay:
                 col=entry.col,
                 pieces_captured=entry.pieces_flipped,
                 board_control_before=50.0,  # Simplified - assume balanced
-                board_control_after=50.0 + (entry.pieces_flipped * 2),  # Rough estimate
-                corner_moves=1 if (entry.row in [0, 7] and entry.col in [0, 7]) else 0,
-                edge_moves=1 if (entry.row in [0, 7] or entry.col in [0, 7]) else 0,
-                mobility_change=0,  # Simplified - would need board state analysis
+                board_control_after=50.0 + (entry.pieces_flipped * 2),
+                corner_moves=(
+                    1
+                    if (entry.row in [0, max_index] and entry.col in [0, max_index])
+                    else 0
+                ),
+                edge_moves=(
+                    1
+                    if (entry.row in [0, max_index] or entry.col in [0, max_index])
+                    else 0
+                ),
+                mobility_change=0,  # Simplified
                 move_quality=self._evaluate_simple_move_quality(entry),
             )
             move_analyses.append(move_analysis)
@@ -2089,21 +2100,32 @@ class GameAnalysisDisplay:
         if len(self.game.ui.move_history) < 4:
             return "Insufficient moves"
 
+        board_size = self.game.board.size
+        center_start = board_size // 2 - 1
+        center_end = board_size // 2 + 1
+
         # Simple opening classification based on first 4 moves
         first_moves = [
             (entry.row, entry.col) for entry in self.game.ui.move_history[:4]
         ]
 
-        # Center-focused opening
-        center_squares = [(3, 3), (3, 4), (4, 3), (4, 4)]
+        # Center-focused opening (in the 4 center squares)
+        center_squares = [
+            (r, c)
+            for r in range(center_start, center_end)
+            for c in range(center_start, center_end)
+        ]
         center_moves = sum(1 for move in first_moves if move in center_squares)
 
         if center_moves >= 3:
             return "Center Control Opening"
 
         # Edge-focused opening
+        max_index = board_size - 1
         edge_moves = sum(
-            1 for r, c in first_moves if r == 0 or r == 7 or c == 0 or c == 7
+            1
+            for r, c in first_moves
+            if r == 0 or r == max_index or c == 0 or c == max_index
         )
 
         if edge_moves >= 2:
@@ -2296,8 +2318,13 @@ class GameAnalysisDisplay:
     def _evaluate_simple_move_quality(self, entry: MoveHistoryEntry) -> str:
         """Evaluate move quality based on available data"""
         pieces_flipped = entry.pieces_flipped
-        is_corner = entry.row in [0, 7] and entry.col in [0, 7]
-        is_edge = entry.row in [0, 7] or entry.col in [0, 7]
+        board_size = self.game.board.size
+        max_index = board_size - 1
+
+        # Check if corner (using actual board size)
+        is_corner = entry.row in [0, max_index] and entry.col in [0, max_index]
+        # Check if edge
+        is_edge = entry.row in [0, max_index] or entry.col in [0, max_index]
 
         # Simple heuristic based on pieces captured and position
         if is_corner:
@@ -3642,25 +3669,26 @@ class Game:
             "",
             "Press ESC or click outside to close",
         ]
-        
+
         # Create a simple modal dialog
         import pygame as pg
+
         theme = THEMES[self.settings.theme]
         screen_w, screen_h = self.screen.get_size()
-        
+
         # Dialog dimensions
         dialog_w = 450
         line_height = 24
         dialog_h = len(about_text) * line_height + 40
         dialog_x = (screen_w - dialog_w) // 2
         dialog_y = (screen_h - dialog_h) // 2
-        
+
         font = pg.font.SysFont("Arial", 16)
         title_font = pg.font.SysFont("Arial", 20, bold=True)
-        
+
         # Capture current screen state once
         background = self.screen.copy()
-        
+
         # Show dialog loop
         showing_about = True
         while showing_about:
@@ -3673,20 +3701,20 @@ class Game:
                     dialog_rect = pg.Rect(dialog_x, dialog_y, dialog_w, dialog_h)
                     if not dialog_rect.collidepoint(ev.pos):
                         showing_about = False
-            
+
             # Restore background (no redrawing)
             self.screen.blit(background, (0, 0))
-            
+
             # Semi-transparent overlay
             overlay = pg.Surface(self.screen.get_size(), pg.SRCALPHA)
             overlay.fill((0, 0, 0, 160))
             self.screen.blit(overlay, (0, 0))
-            
+
             # Dialog background
             dialog_rect = pg.Rect(dialog_x, dialog_y, dialog_w, dialog_h)
             pg.draw.rect(self.screen, theme["hud"], dialog_rect, border_radius=10)
             pg.draw.rect(self.screen, theme["accent"], dialog_rect, 3, border_radius=10)
-            
+
             # Draw text
             y = dialog_y + 20
             for i, line in enumerate(about_text):
@@ -3697,10 +3725,10 @@ class Game:
                 text_x = dialog_x + (dialog_w - text_surf.get_width()) // 2
                 self.screen.blit(text_surf, (text_x, y))
                 y += line_height
-            
+
             pg.display.flip()
             self.clock.tick(60)
-        
+
         self.ui.status = "About dialog closed"
 
     def on_make_desktop(self):
