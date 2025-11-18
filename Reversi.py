@@ -2740,17 +2740,21 @@ class HintSystem:
             self.hints = []
             return
 
-        # Use AI to evaluate each move
+        # Use smart depth: better than opponent but not too slow
+        # Depth 4-5 gives good hints while staying responsive
+        opponent_depth = self.game.settings.ai_depth
+        hint_depth = min(5, max(4, opponent_depth + 1))
+
         move_scores = []
         for move in legal_moves:
             board_copy = Board.deserialize(self.game.board.serialize())
             board_copy.to_move = self.game.board.to_move
             board_copy.make_move(move)
 
-            # Quick eval (depth 2 for speed)
+            # Evaluate using smart depth for quality hints with good performance
             score = -self.game.ai.search(
                 board_copy,
-                min(2, self.game.settings.ai_depth),
+                hint_depth,
                 -float("inf"),
                 float("inf"),
                 OPP[self.game.board.to_move],
@@ -2783,8 +2787,11 @@ class HintSystem:
         """Toggle hint display"""
         self.show_hints = not self.show_hints
         if self.show_hints:
+            self.game.ui.status = "Calculating hints..."
             self.generate_hints()
-            self.game.ui.status = "Hints enabled - Top moves highlighted"
+            opponent_depth = self.game.settings.ai_depth
+            hint_depth = min(5, max(4, opponent_depth + 1))
+            self.game.ui.status = f"Hints enabled (depth {hint_depth})"
         else:
             self.game.ui.status = "Hints disabled"
 
@@ -2795,6 +2802,11 @@ class HintSystem:
 
         for i, hint in enumerate(self.hints):
             row, col = hint["row"], hint["col"]
+
+            # Skip if this cell is not empty (safety check)
+            if self.game.board.grid[row][col] != EMPTY:
+                continue
+
             x = board_rect.x + col * cell + cell // 2
             y = board_rect.y + row * cell + cell // 2
 
@@ -2940,16 +2952,17 @@ class Game:
         self.ui = UIState()
         self.ui.game_start_time = time.time()  # Initialize game start time
         self.ai = AI(max_depth=self.settings.ai_depth)
-        self.menu_system = MenuSystem(self)
         self.selection_dialog = SelectionDialog()
         self.sfx = SFX(enabled=self.settings.sound)
         self.gameplay_analyzer = GameplayAnalyzer()
         self.game_analysis = GameAnalysisDisplay(self)
         self.move_analysis = MoveAnalysisDisplay(self)
-        # New enhancement systems
+        # New enhancement systems (must be before menu_system)
         self.replay_mode = ReplayMode(self)
         self.hint_system = HintSystem(self)
         self.exporter = GameExporter()
+        # Menu system must be initialized after hint_system
+        self.menu_system = MenuSystem(self)
         self.ensure_icon()
         self.wood_cache = None
         self.disc_cache = {}  # Cache for pre-rendered discs
@@ -3439,63 +3452,113 @@ class Game:
         # Drop shadow
         pg.draw.circle(surf, (0, 0, 0, 60), (center_x + 2, center_y + 3), radius + 1)
 
-        if color == BLACK:
-            # Black checker piece with classic patterns
-            base_color = (20, 20, 20)
+        style = self.settings.piece_style
 
-            # Main disc body
-            pg.draw.circle(surf, base_color, (center_x, center_y), radius)
-
-            # Classic checker patterns - radial lines from center
-            pattern_color = (65, 65, 65)  # Lighter for better visibility on black
-            num_lines = 16  # Number of radial lines
-
-            for i in range(num_lines):
-                angle = (2 * math.pi * i) / num_lines
-                # Draw radial lines from center outward
-                start_x = center_x + math.cos(angle) * (radius * 0.2)
-                start_y = center_y + math.sin(angle) * (radius * 0.2)
-                end_x = center_x + math.cos(angle) * (radius * 0.85)
-                end_y = center_y + math.sin(angle) * (radius * 0.85)
-                pg.draw.line(surf, pattern_color, (start_x, start_y), (end_x, end_y), 1)
-
-            # Add concentric circles for classic checker look
-            for ring in range(1, 4):
-                ring_radius = radius * (0.3 + ring * 0.2)
-                pg.draw.circle(
-                    surf, pattern_color, (center_x, center_y), int(ring_radius), 1
+        if style == "emoji":
+            # Emoji style - use text rendering for emoji-like pieces
+            emoji = "⚫" if color == BLACK else "⚪"
+            font_size = int(radius * 2.2)  # Scale to fit
+            try:
+                emoji_font = pg.font.SysFont(
+                    "seguiemoji,applesymbolsfb,notocoloremoji", font_size
                 )
+                emoji_surf = emoji_font.render(emoji, True, (0, 0, 0))
+                emoji_rect = emoji_surf.get_rect(center=(center_x, center_y))
+                surf.blit(emoji_surf, emoji_rect)
+            except:
+                # Fallback if emoji font not available
+                base_color = (20, 20, 20) if color == BLACK else (245, 245, 245)
+                pg.draw.circle(surf, base_color, (center_x, center_y), radius)
 
-        else:  # WHITE
-            # White checker piece with classic patterns
-            base_color = (245, 245, 245)
+        elif style == "modern":
+            # Modern flat design - simple gradients and clean look
+            if color == BLACK:
+                # Black modern piece with subtle gradient
+                for i in range(radius, 0, -1):
+                    gradient_intensity = 20 + int((radius - i) / radius * 40)
+                    pg.draw.circle(
+                        surf,
+                        (gradient_intensity, gradient_intensity, gradient_intensity),
+                        (center_x, center_y),
+                        i,
+                    )
+                # Clean outer ring
+                pg.draw.circle(surf, (10, 10, 10), (center_x, center_y), radius, 3)
+            else:
+                # White modern piece with subtle gradient
+                for i in range(radius, 0, -1):
+                    gradient_intensity = 245 - int((radius - i) / radius * 30)
+                    pg.draw.circle(
+                        surf,
+                        (gradient_intensity, gradient_intensity, gradient_intensity),
+                        (center_x, center_y),
+                        i,
+                    )
+                # Clean outer ring
+                pg.draw.circle(surf, (180, 180, 180), (center_x, center_y), radius, 3)
 
-            # Main disc body
-            pg.draw.circle(surf, base_color, (center_x, center_y), radius)
+        else:  # traditional
+            if color == BLACK:
+                # Black checker piece with classic patterns
+                base_color = (20, 20, 20)
 
-            # Classic checker patterns - radial lines from center
-            pattern_color = (200, 200, 200)  # Darker gray for visibility on white
-            num_lines = 16  # Number of radial lines
+                # Main disc body
+                pg.draw.circle(surf, base_color, (center_x, center_y), radius)
 
-            for i in range(num_lines):
-                angle = (2 * math.pi * i) / num_lines
-                # Draw radial lines from center outward
-                start_x = center_x + math.cos(angle) * (radius * 0.2)
-                start_y = center_y + math.sin(angle) * (radius * 0.2)
-                end_x = center_x + math.cos(angle) * (radius * 0.85)
-                end_y = center_y + math.sin(angle) * (radius * 0.85)
-                pg.draw.line(surf, pattern_color, (start_x, start_y), (end_x, end_y), 1)
+                # Classic checker patterns - radial lines from center
+                pattern_color = (65, 65, 65)  # Lighter for better visibility on black
+                num_lines = 16  # Number of radial lines
 
-            # Add concentric circles for classic checker look
-            for ring in range(1, 4):
-                ring_radius = radius * (0.3 + ring * 0.2)
-                pg.draw.circle(
-                    surf, pattern_color, (center_x, center_y), int(ring_radius), 1
-                )
+                for i in range(num_lines):
+                    angle = (2 * math.pi * i) / num_lines
+                    # Draw radial lines from center outward
+                    start_x = center_x + math.cos(angle) * (radius * 0.2)
+                    start_y = center_y + math.sin(angle) * (radius * 0.2)
+                    end_x = center_x + math.cos(angle) * (radius * 0.85)
+                    end_y = center_y + math.sin(angle) * (radius * 0.85)
+                    pg.draw.line(
+                        surf, pattern_color, (start_x, start_y), (end_x, end_y), 1
+                    )
 
-        # Clean rim for definition
-        rim_color = (0, 0, 0) if color == BLACK else (180, 180, 180)
-        pg.draw.circle(surf, rim_color, (center_x, center_y), radius, 2)
+                # Add concentric circles for classic checker look
+                for ring in range(1, 4):
+                    ring_radius = radius * (0.3 + ring * 0.2)
+                    pg.draw.circle(
+                        surf, pattern_color, (center_x, center_y), int(ring_radius), 1
+                    )
+
+            else:  # WHITE
+                # White checker piece with classic patterns
+                base_color = (245, 245, 245)
+
+                # Main disc body
+                pg.draw.circle(surf, base_color, (center_x, center_y), radius)
+
+                # Classic checker patterns - radial lines from center
+                pattern_color = (200, 200, 200)  # Darker gray for visibility on white
+                num_lines = 16  # Number of radial lines
+
+                for i in range(num_lines):
+                    angle = (2 * math.pi * i) / num_lines
+                    # Draw radial lines from center outward
+                    start_x = center_x + math.cos(angle) * (radius * 0.2)
+                    start_y = center_y + math.sin(angle) * (radius * 0.2)
+                    end_x = center_x + math.cos(angle) * (radius * 0.85)
+                    end_y = center_y + math.sin(angle) * (radius * 0.85)
+                    pg.draw.line(
+                        surf, pattern_color, (start_x, start_y), (end_x, end_y), 1
+                    )
+
+                # Add concentric circles for classic checker look
+                for ring in range(1, 4):
+                    ring_radius = radius * (0.3 + ring * 0.2)
+                    pg.draw.circle(
+                        surf, pattern_color, (center_x, center_y), int(ring_radius), 1
+                    )
+
+            # Clean rim for definition
+            rim_color = (0, 0, 0) if color == BLACK else (180, 180, 180)
+            pg.draw.circle(surf, rim_color, (center_x, center_y), radius, 2)
 
         # Subtle bevel edge for 3D effect
         if color == BLACK:
@@ -3524,8 +3587,8 @@ class Game:
     def draw_disc(self, rect, color, alpha: Optional[int] = None):
         r = int(min(rect.width, rect.height) * DISC_SIZE_RATIO)
 
-        # Use cached disc if available
-        cache_key = (r, color)
+        # Use cached disc if available (include style in cache key)
+        cache_key = (r, color, self.settings.piece_style)
         if cache_key not in self.disc_cache:
             self.disc_cache[cache_key] = self._create_textured_disc(r, color)
 
@@ -3552,7 +3615,7 @@ class Game:
             scale = 1.0 - (progress * 1.6)  # Faster shrink
             scaled_r = max(1, int(r * scale))
 
-            cache_key = (scaled_r, from_color)
+            cache_key = (scaled_r, from_color, self.settings.piece_style)
             if cache_key not in self.disc_cache:
                 self.disc_cache[cache_key] = self._create_textured_disc(
                     scaled_r, from_color
@@ -3566,7 +3629,7 @@ class Game:
             scale = (progress - 0.5) * 1.6  # Faster grow
             scaled_r = max(1, int(r * scale))
 
-            cache_key = (scaled_r, to_color)
+            cache_key = (scaled_r, to_color, self.settings.piece_style)
             if cache_key not in self.disc_cache:
                 self.disc_cache[cache_key] = self._create_textured_disc(
                     scaled_r, to_color
@@ -3957,6 +4020,10 @@ class Game:
         # Update move analysis window if it's active
         if self.move_analysis.active and move_analysis:
             self.move_analysis.show_analysis(move_analysis)
+
+        # Regenerate hints if they're currently shown
+        if self.hint_system.show_hints:
+            self.hint_system.generate_hints()
 
         self.sfx.play("place")
         self.sfx.play("flip")

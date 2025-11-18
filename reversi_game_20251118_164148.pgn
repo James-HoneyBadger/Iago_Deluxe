@@ -1,0 +1,10 @@
+[Event "Reversi Deluxe Game"]
+[Date "2025.11.18"]
+[Round "-"]
+[Black "Human"]
+[White "Computer"]
+[Result "1-0"]
+[BoardSize "8x8"]
+[FinalScore "54-10"]
+
+1. d3 c3 2. b3 e3 3. f3 e2 4. f6 a3 5. e1 g3 6. c4 e6 7. h3 g6 8. e7 f4 9. h6 f2 10. g4 f1 11. g1 h5 12. h4 f5 13. d1 f7 14. g5 e8 15. d2 g2 16. b4 c5 17. h1 c2 18. b2 c1 19. a1 h2 20. d7 h7 21. h8 d6 22. b1 g7 23. g8 a2 24. f8 c8 25. d8 c6 26. b8 a4 27. a5 b7 28. c7 b6 29. a7 b5 30. a6 a8 1-0
