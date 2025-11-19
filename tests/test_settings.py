@@ -5,13 +5,14 @@ Tests configuration persistence and error handling
 """
 import sys
 import os
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import unittest
 import json
 import tempfile
-from src.Reversi import Settings, Board
+
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.Reversi import Settings, Board  # noqa: E402
 
 
 class TestSettingsSaveLoad(unittest.TestCase):
@@ -29,7 +30,7 @@ class TestSettingsSaveLoad(unittest.TestCase):
         """Clean up temporary file"""
         try:
             os.unlink(self.temp_path)
-        except:
+        except (OSError, FileNotFoundError):
             pass
 
     def test_default_settings(self):
@@ -45,9 +46,6 @@ class TestSettingsSaveLoad(unittest.TestCase):
         settings = Settings()
         settings.theme = "midnight"
         settings.sound = False
-
-        # Save to temp file
-        original_file = Settings.__dataclass_fields__["theme"].default
 
         # Manually save
         data = {
@@ -93,7 +91,7 @@ class TestBoardSerialization(unittest.TestCase):
         """Clean up temporary file"""
         try:
             os.unlink(self.temp_path)
-        except:
+        except (OSError, FileNotFoundError):
             pass
 
     def test_save_initial_board(self):
@@ -175,7 +173,7 @@ class TestFileErrorHandling(unittest.TestCase):
         # Should not crash
         try:
             with open(nonexistent, "r") as f:
-                data = json.load(f)
+                json.load(f)
         except FileNotFoundError:
             # Expected
             pass
@@ -220,20 +218,20 @@ class TestConfigValidation(unittest.TestCase):
 
     def test_invalid_theme(self):
         """Test that invalid theme names are handled"""
-        settings = Settings()
+        Settings()  # Creates settings with defaults
 
         # Try setting invalid theme
-        invalid_theme = "nonexistent_theme"
+        # invalid_theme = "nonexistent_theme"
 
         # Should either reject or use default
         # (actual validation would be in Settings.load)
 
     def test_invalid_ai_depth(self):
         """Test that invalid AI depth is handled"""
-        settings = Settings()
+        Settings()  # Creates settings with defaults
 
         # AI depth should be 1-6
-        invalid_depths = [-1, 0, 10, 100]
+        # invalid_depths = [-1, 0, 10, 100]
 
         # These should be clamped or rejected
 

@@ -5,11 +5,12 @@ Tests AI move selection, evaluation, and difficulty levels
 """
 import sys
 import os
+import unittest
 
+# Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import unittest
-from src.Reversi import Board, AI, BLACK, WHITE
+from src.Reversi import Board, AI, BLACK, WHITE  # noqa: E402
 
 
 class TestAIInitialization(unittest.TestCase):
@@ -243,8 +244,7 @@ class TestAIAdaptiveDepth(unittest.TestCase):
         board.grid[0][1] = 0
 
         # AI should still be able to choose
-        move = ai.choose(board, BLACK)
-        # Just verify it doesn't crash
+        ai.choose(board, BLACK)  # Just verify it doesn't crash
 
 
 if __name__ == "__main__":

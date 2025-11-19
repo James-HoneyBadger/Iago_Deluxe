@@ -35,38 +35,39 @@ def test_move_analysis_toggle():
     game = Game(board, settings)
 
     # Initial state should be False
-    assert game.ui.show_move_analysis == False, "Initial state should be False"
+    assert not game.ui.show_move_analysis, "Initial state should be False"
     print("✓ Initial state is False")
 
     # Toggle it on
     game.on_toggle_move_analysis()
-    assert game.ui.show_move_analysis == True, "Should be True after toggle"
+    assert game.ui.show_move_analysis, "Should be True after toggle"
     print("✓ Toggle works - now True")
 
     # Toggle it off
     game.on_toggle_move_analysis()
-    assert game.ui.show_move_analysis == False, "Should be False after second toggle"
+    assert not game.ui.show_move_analysis, "Should be False after second toggle"
     print("✓ Toggle works - now False")
 
     # Toggle it on again
     game.on_toggle_move_analysis()
-    assert game.ui.show_move_analysis == True, "Should be True after third toggle"
+    assert game.ui.show_move_analysis, "Should be True after third toggle"
     print("✓ Toggle works - now True again")
 
     # Start a new game - this should preserve the setting
     game.on_new()
-    assert game.ui.show_move_analysis == True, "Should still be True after new game"
+    assert game.ui.show_move_analysis, "Should still be True after new game"
     print("✓ Setting preserved across new game")
 
     # Test with False state
     game.on_toggle_move_analysis()  # Turn off
-    assert game.ui.show_move_analysis == False, "Should be False"
+    assert not game.ui.show_move_analysis, "Should be False"
     game.on_new()  # New game
-    assert game.ui.show_move_analysis == False, "Should still be False after new game"
+    assert not game.ui.show_move_analysis, "Should still be False after new game"
     print("✓ False state also preserved across new game")
 
     print(
-        "\n🎉 All tests passed! Move analysis toggle functionality is working correctly."
+        "\n🎉 All tests passed! "
+        "Move analysis toggle functionality is working correctly."
     )
 
 

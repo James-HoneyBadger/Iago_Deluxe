@@ -85,7 +85,7 @@ This document describes the major enhancements implemented to improve the user e
 **Usage:**
 - Game → Export to PGN
 - Game → Export to JSON
-- Files saved with timestamp: `reversi_game_YYYYMMDD_HHMMSS.pgn/json`
+- Files saved to `data/` directory with timestamp: `reversi_game_YYYYMMDD_HHMMSS.pgn/json`
 
 **PGN Format Includes:**
 - Event, Date, Players, Result

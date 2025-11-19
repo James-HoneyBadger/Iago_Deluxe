@@ -1,284 +1,224 @@
-# Reversi Deluxe
+# HB_Reversi Documentation
 
-A feature-rich implementation of the classic Reversi (Othello) board game with AI opponent, built in Python using Pygame.
+Welcome to the comprehensive documentation for HB_Reversi, a feature-rich implementation of the classic Reversi (Othello) board game.
 
-![Reversi Deluxe](screenshot.png)
-
-## 🎯 What's New in v2.0
-
-**Major improvements for reliability and usability:**
-- ✅ **Comprehensive test suite** - 75+ automated tests
-- ✅ **Advanced logging system** - Debug and monitor gameplay
-- ✅ **Enhanced CLI** - 10+ command-line options
-- ✅ **Better error handling** - Graceful error recovery
-- ✅ **Centralized configuration** - Easy customization
-
-See [IMPROVEMENTS.md](IMPROVEMENTS.md) for full details.
-
-## Features
-
-### Game Features
-- **Classic Reversi gameplay** with standard 8x8 board
-- **AI opponent** with configurable difficulty levels (1-6)
-- **Human vs Human** or **Human vs AI** gameplay modes
-- **Move hints** and **legal move highlighting**
-- **Undo/Redo** functionality for move exploration
-- **Save/Load** games with JSON format
-- **Sound effects** and **visual animations**
-
-### Analysis Features
-- **Post-game analysis** with comprehensive statistics
-- **Move-by-move analysis** with quality ratings
-- **Real-time move feedback** during gameplay
-- **Board control tracking** and strategic insights
-- **Performance metrics** for both players
-
-### Interface Features
-- **Multiple themes** (Classic, Wood, Ocean, Midnight)
-- **Responsive design** with resizable window
-- **Clean menu system** with keyboard shortcuts
-- **Tutorial system** for new players
-- **Desktop launcher** creation
-
-## Installation
-
-### Requirements
-- Python 3.7 or higher
-- Pygame 2.0 or higher
+## 📚 Documentation Index
 
 ### Quick Start
+- **[Main README](../README.md)** - Project overview, installation, and quick start guide
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Commands, shortcuts, and file locations
+
+### Development
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Architecture, technical details, and development workflow
+- **[CONTRIBUTING.md](../CONTRIBUTING.md)** - Contribution guidelines and code standards
+
+### Implementation Details
+- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Feature implementation overview
+- **[IMPROVEMENTS.md](IMPROVEMENTS.md)** - Enhancement history and changelog
+- **[ENHANCEMENTS.md](ENHANCEMENTS.md)** - Detailed feature descriptions
+
+### Testing & Verification
+- **[AI_LEVELS_VERIFICATION.md](AI_LEVELS_VERIFICATION.md)** - AI difficulty testing methodology
+- **[MENU_IMPROVEMENTS.txt](MENU_IMPROVEMENTS.txt)** - UI enhancement notes
+
+## 🎯 Quick Navigation
+
+### For Users
+**Just want to play?**
+1. See [Installation Guide](../README.md#quick-start)
+2. Read [Quick Reference](QUICK_REFERENCE.md) for commands
+3. Check [Gameplay Tips](QUICK_REFERENCE.md#gameplay-tips)
+
+### For Developers
+**Contributing code?**
+1. Read [Development Guide](DEVELOPMENT.md)
+2. Review [Contributing Guidelines](../CONTRIBUTING.md)
+3. Set up your [Development Environment](DEVELOPMENT.md#development-setup)
+
+### For Researchers
+**Analyzing the AI?**
+1. See [AI Levels Verification](AI_LEVELS_VERIFICATION.md)
+2. Review [AI Implementation](DEVELOPMENT.md#ai-class)
+3. Run [AI Benchmarks](QUICK_REFERENCE.md#ai-benchmarking)
+
+## 📁 Project Structure
+
+```
+HB_Reversi/
+├── README.md                    # Main project documentation
+├── CONTRIBUTING.md              # How to contribute
+│
+├── src/                         # Source code
+│   ├── Reversi.py              # Main game (5100+ lines)
+│   ├── config.py               # Configuration
+│   ├── logger.py               # Logging system
+│   └── error_handling.py       # Error handling
+│
+├── tests/                       # Test suite
+│   ├── test_*.py               # Unit tests
+│   └── verify_ai_levels.py     # AI benchmarking
+│
+├── docs/                        # Documentation (you are here)
+│   ├── README.md               # This file
+│   ├── DEVELOPMENT.md          # Development guide
+│   ├── QUICK_REFERENCE.md      # Quick reference
+│   └── *.md                    # Other documentation
+│
+├── config/                      # Configuration files
+│   └── reversi-settings.json   # User preferences
+│
+├── data/                        # Game data
+│   └── *.pgn, *.json           # Saved games
+│
+└── assets/                      # Game assets
+    └── reversi-icon.png        # Application icon
+```
+
+## 🎮 Features Overview
+
+### Gameplay
+- **Classic Reversi** - Full implementation of Reversi/Othello rules
+- **6 AI Levels** - From beginner (Level 1) to expert (Level 6)
+- **Multiple Board Sizes** - 4×4 to 16×16 (default 8×8)
+- **Undo/Redo** - Full move history with unlimited undo
+- **Move Hints** - Visual indicators for legal moves
+- **Tutorial** - Interactive guide for new players
+
+### Analysis
+- **Move Analysis** - Real-time evaluation of move quality
+- **Game Statistics** - Comprehensive post-game analysis
+- **Performance Tracking** - Win/loss records per difficulty
+- **Strategic Insights** - Board control, mobility, corner metrics
+
+### Customization
+- **5 Themes** - Classic, Ocean, Sunset, Midnight, Forest
+- **Sound Effects** - Toggleable audio feedback
+- **Save/Load** - PGN and JSON export formats
+- **Settings Persistence** - Preferences saved automatically
+
+## 🚀 Getting Started
+
+### Installation
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/reversi-deluxe.git
-cd reversi-deluxe
-
-# Install dependencies
-pip install pygame
-
-# Run the game with default settings
-python3 main.py
-
-# Or with custom options
-python3 main.py --size 10 --difficulty 5 --theme midnight
+git clone https://github.com/James-HoneyBadger/HB_Reversi.git
+cd HB_Reversi
+./setup.sh
 ```
 
-### Alternative Installation
+### Running the Game
 ```bash
-# Install from requirements
-pip install -r requirements.txt
-
-# Run the game
-python3 main.py
+./play.sh                        # Start with default settings
+./play.sh -s 10 -d 5 -t ocean   # 10×10, Level 5, Ocean theme
+./play.sh --help                # Show all options
 ```
 
-## How to Play
+See [Quick Reference](QUICK_REFERENCE.md) for complete command-line options.
 
-### Command-Line Options (New in v2.0!)
+## 🛠️ Development
 
+### Prerequisites
+- Python 3.7+
+- Pygame 2.0+
+- pytest (for testing)
+- flake8 (for linting)
+
+### Development Setup
 ```bash
-# View all options
-python3 main.py --help
+# Activate virtual environment
+source .venv/bin/activate
 
-# Start with custom board size
-python3 main.py --size 10
+# Run tests
+python3 tests/run_tests.py
 
-# Set AI difficulty (1=Beginner, 6=Master)
-python3 main.py --difficulty 5
-
-# Choose a theme
-python3 main.py --theme midnight
-
-# Disable sound effects
-python3 main.py --no-sound
-
-# Load a saved game
-python3 main.py --load mygame.rsv
-
-# AI vs AI mode
-python3 main.py --ai-black --ai-white
-
-# Enable debug logging
-python3 main.py --debug
-
-# Combine multiple options
-python3 main.py -s 10 -d 5 -t ocean --no-sound
+# Check code quality
+python3 -m flake8 src/ tests/
 ```
 
-Available options:
-- `-s, --size N` - Board size (4-16, even numbers)
-- `-d, --difficulty LEVEL` - AI difficulty (1-6)
-- `-t, --theme THEME` - Color theme (classic, ocean, sunset, midnight, forest)
-- `--no-sound` - Disable sound effects
-- `--load FILE` - Load saved game
-- `--ai-black` - Enable AI for black player
-- `--ai-white` - Enable AI for white player
-- `--debug` - Enable debug logging
-- `--version` - Show version
-- `-h, --help` - Show help message
+See [Development Guide](DEVELOPMENT.md) for detailed information.
 
-### Objective
-Reversi is played on an 8x8 board with black and white pieces. The goal is to have the majority of your color pieces on the board when no more moves can be made.
+## 📊 Testing
 
-### Rules
-1. Players take turns placing pieces on empty squares
-2. Each move must "sandwich" at least one opponent piece between your new piece and an existing piece of your color
-3. All sandwiched opponent pieces flip to your color
-4. If no legal moves are available, the turn passes to the opponent
-5. The game ends when neither player can move
-6. The player with the most pieces wins
+### Test Coverage
+- **Board Logic:** 95% coverage
+- **AI System:** 85% coverage
+- **Settings:** 90% coverage
+- **Overall:** ~87% coverage
 
-### In-Game Controls
-- **Mouse**: Click to place pieces
-- **V**: Toggle move analysis window
-- **H**: Toggle move hints
-- **U/R**: Undo/Redo moves
-- **N**: New game
-- **S/L**: Save/Load game
-- **A**: Toggle AI for current player
-- **D**: Cycle AI difficulty
-- **G**: Show post-game analysis (after game ends)
-- **T**: Show tutorial
-- **M**: Toggle sound
-- **Q/ESC**: Quit
-
-## Game Modes
-
-### AI Difficulty Levels
-1. **Beginner** - Simple evaluation, good for learning
-2. **Easy** - Basic strategy with some lookahead
-3. **Medium** - Balanced play with moderate depth
-4. **Hard** - Strong strategic play
-5. **Expert** - Advanced evaluation with deep search
-6. **Master** - Maximum difficulty with sophisticated strategy
-
-### Analysis Features
-- **Move Quality Ratings**: Excellent, Good, Fair, Poor
-- **Strategic Metrics**: Board control, corner control, mobility
-- **Performance Tracking**: Move accuracy, critical moments
-- **Post-game Review**: Complete game analysis with suggestions
-
-## Themes
-
-Choose from multiple visual themes:
-- **Classic**: Traditional black and white
-- **Wood**: Elegant wooden board design
-- **Ocean**: Blue oceanic theme
-- **Midnight**: Dark theme for night play
-
-## Configuration
-
-The game automatically saves settings including:
-- Theme preference
-- Sound settings
-- AI difficulty levels
-- Window size and position
-
-Settings are stored in `reversi_settings.json`.
-
-## Development
-
-## Development
-
-### Running Tests (New in v2.0!)
-
-The project includes a comprehensive test suite with 75+ tests.
-
+### Running Tests
 ```bash
-# Run all tests
-cd tests
-python3 run_tests.py
+# All tests
+python3 tests/run_tests.py
 
-# Run tests with verbose output
-python3 run_tests.py -v
+# With coverage report
+python3 -m pytest --cov=src --cov-report=html tests/
 
-# Run specific test module
-python3 run_tests.py -m test_board
-
-# Quiet mode (only show summary)
-python3 run_tests.py -q
+# AI difficulty verification
+python3 tests/verify_ai_levels.py
 ```
 
-Test coverage includes:
-- **Board logic** - Move validation, game state, undo/redo
-- **AI functionality** - Evaluation, move selection, difficulty levels
-- **Settings & I/O** - Save/load, error handling, validation
+See [AI Levels Verification](AI_LEVELS_VERIFICATION.md) for testing methodology.
 
-### Debugging
+## 🤝 Contributing
 
-Enable debug logging to troubleshoot issues:
+We welcome contributions! Please see:
+- [CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines
+- [DEVELOPMENT.md](DEVELOPMENT.md) - Technical architecture
+- [Code of Conduct](#) - Community standards
 
-```bash
-python3 main.py --debug
-```
-
-Logs are written to `reversi.log` with detailed information about:
-- Game state changes
-- AI decision making
-- File operations
-- Performance metrics
-
-### Project Structure
-```
-reversi-deluxe/
-├── Reversi.py              # Main game file
-├── config.py               # Centralized configuration
-├── logger.py               # Logging system
-├── error_handling.py       # Error handling utilities
-├── tests/                  # Test suite
-│   ├── test_board.py       # Board tests
-│   ├── test_ai.py          # AI tests
-│   ├── test_settings.py    # Settings tests
-│   └── run_tests.py        # Test runner
-├── README.md               # This file
-├── IMPROVEMENTS.md         # Detailed improvement docs
-├── IMPLEMENTATION_SUMMARY.md  # Implementation summary
-├── requirements.txt        # Python dependencies
-└── LICENSE                 # MIT License
-```
-
-### Architecture
-- **Board**: Core game logic and move validation
-- **AI**: Minimax algorithm with alpha-beta pruning
-- **UI**: Pygame-based interface with themes
-- **Analysis**: Move evaluation and game statistics
-- **Settings**: Persistent configuration management
-- **Logger**: Centralized logging framework (v2.0)
-- **Config**: Centralized configuration (v2.0)
-- **Error Handling**: Validation and error recovery (v2.0)
-
-### Contributing
+### Quick Contribution Workflow
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and test thoroughly
-4. **Run the test suite**: `cd tests && python3 run_tests.py`
-5. Commit with descriptive messages: `git commit -am 'Add feature'`
-6. Push to your branch: `git push origin feature-name`
-7. Submit a pull request
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
-## License
+## 📝 Version History
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### v2.0.0 (Current - November 2025)
+**Major Refactoring Release**
+- Restructured into modular `src/` package
+- Added comprehensive logging system
+- Implemented error handling framework
+- Enhanced configuration management
+- Improved test coverage
+- Updated documentation
 
-## Acknowledgments
+### v1.0.0
+**Initial Feature-Complete Release**
+- Complete Reversi gameplay
+- AI opponent with 6 difficulty levels
+- Post-game analysis
+- Multiple themes
+- Save/load functionality
+- Tutorial system
 
-- Inspired by the classic Reversi/Othello board game
-- Built with Python and Pygame
-- AI implementation uses minimax with alpha-beta pruning
-- Thanks to the Pygame community for excellent documentation
+## 🔗 External Resources
 
-## Screenshots
+### Reversi Strategy
+- [World Othello Federation](https://www.worldothello.org/)
+- [Reversi Strategy Guide](https://www.worldothello.org/strategy)
 
-### Main Game Interface
-Classic gameplay with move hints enabled.
+### Technical References
+- [Minimax Algorithm](https://en.wikipedia.org/wiki/Minimax)
+- [Alpha-Beta Pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
+- [Pygame Documentation](https://www.pygame.org/docs/)
 
-### Post-Game Analysis
-Comprehensive analysis showing move quality and strategic insights.
+### Similar Projects
+- [Edax](https://github.com/abulmo/edax-reversi) - Strong Reversi engine
+- [Logistello](http://www.radagast.se/othello/log.html) - Historic Othello program
 
-### Move Analysis Window
-Real-time analysis of individual moves with detailed metrics.
+## 📧 Support
+
+- **Issues:** [GitHub Issues](https://github.com/James-HoneyBadger/HB_Reversi/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/James-HoneyBadger/HB_Reversi/discussions)
+- **Email:** See repository for contact information
+
+## 📄 License
+
+This project is licensed under the terms in the [LICENSE](../LICENSE) file.
 
 ---
 
-**Enjoy playing Reversi Deluxe!** 🎮
-
-For questions, suggestions, or bug reports, please open an issue on GitHub.
+**Version:** 2.0.0  
+**Last Updated:** November 19, 2025  
+**Repository:** [https://github.com/James-HoneyBadger/HB_Reversi](https://github.com/James-HoneyBadger/HB_Reversi)

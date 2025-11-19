@@ -1,203 +1,386 @@
-# Reversi Deluxe - Quick Reference Card
+# Reversi Deluxe - Quick Reference
 
-## 🎮 New Features Quick Start
+## 📁 File Locations
 
-### Replay Mode
-**How to use:** Press `P` or Help → Replay Mode
-- ◀/▶ or Arrow Keys: Step through moves
-- ⏯ or SPACE: Play/Pause auto-replay
-- Click timeline: Jump to specific move
-- ESC: Exit replay mode
+### Configuration Files
+```
+config/
+└── reversi-settings.json    # Your game preferences (auto-created)
+```
 
-### AI-Powered Hints
-**How to use:** Press `I` or AI → Show Hints
-- See top 3 recommended moves
-- Green (1) = Best move
-- Blue (2) = Good alternative
-- Orange (3) = Fair option
+### Game Data
+```
+data/
+├── reversi_game_*.pgn       # Saved games (PGN format)
+└── reversi_game_*.json      # Saved games (JSON format)
+```
 
-### Export Games
-**How to use:** Game → Export to PGN/JSON
-- PGN: Compatible with analysis tools
-- JSON: Full programmatic access
-- Files saved with timestamp
+### Logs
+```
+reversi.log                  # Game logs (auto-rotated at 10MB)
+```
 
-### Per-Difficulty Stats
-**How to use:** Help → Per-Difficulty Stats
-- View win rates for each AI level
-- Track improvement over time
-- Separate stats for levels 1-6
+## 🚀 Quick Start Commands
 
-## 🎨 Accessibility Features
+### Basic Usage
+```bash
+# Start game with default settings
+./play.sh
 
-### Colorblind Mode
-View → Theme → Colorblind (Blue/Orange)
+# Show all options
+./play.sh --help
 
-### High Contrast Mode  
-View → Theme → High Contrast
+# Direct Python execution
+.venv/bin/python3 main.py
+```
 
-### Font Sizes
-View → Font Size → Choose 0.8x to 1.5x
+### Command-Line Options
+```bash
+# Board size (4, 6, 8, 10, 12, 14, or 16)
+./play.sh -s 10
+./play.sh --size 12
 
-### Grid Toggle
-View → Grid → On/Off for clean board
+# AI difficulty (1-6)
+./play.sh -d 5
+./play.sh --difficulty 3
 
-### Move Preview
-View → Move Preview → See pieces before placing
+# Theme selection
+./play.sh -t midnight
+./play.sh --theme ocean
+# Available: classic, ocean, sunset, midnight, forest
 
-## ⌨️ All Keyboard Shortcuts
+# Disable features
+./play.sh --no-sound          # Mute sound effects
+./play.sh --no-hints          # Disable move hints
+./play.sh --no-move-preview   # Disable move preview
+
+# Debug mode
+./play.sh --debug             # Enable detailed logging
+
+# Combination examples
+./play.sh -s 10 -d 5 -t ocean --no-sound
+./play.sh --size 12 --difficulty 6 --theme midnight
+```
+
+## ⌨️ Keyboard Shortcuts
 
 ### Game Control
-- `Q` - Quit game
-- `N` - New game
-- `S` - Save game
-- `L` - Load game
-- `U` - Undo move
-- `R` - Redo move
+| Key | Action |
+|-----|--------|
+| `N` | New game |
+| `S` | Save game |
+| `L` | Load game |
+| `Q` | Quit game |
+| `ESC` | Pause menu |
+
+### Move Navigation
+| Key | Action |
+|-----|--------|
+| `U` | Undo last move |
+| `R` | Redo move |
+| `Ctrl+Z` | Undo (alternative) |
+| `Ctrl+Y` | Redo (alternative) |
 
 ### AI & Hints
-- `I` - Toggle AI hints
-- `H` - Toggle basic hints
-- `A` - Toggle AI for current player
-- `D` - Cycle AI difficulty
+| Key | Action |
+|-----|--------|
+| `H` | Toggle hints |
+| `I` | Toggle AI move preview |
+| `A` | Toggle AI for current player |
+| `D` | Cycle AI difficulty |
 
-### Analysis & Tutorial
-- `G` - Game analysis (when game over)
-- `V` - Move analysis window
-- `T` - Strategy tutorial
+### Analysis & Help
+| Key | Action |
+|-----|--------|
+| `G` | Show game analysis (post-game) |
+| `V` | Toggle move analysis window |
+| `T` | Open tutorial |
+| `F1` | Help screen |
 
-### Replay Mode (when active)
-- `P` - Enter/Exit replay mode
-- `←` - Previous move
-- `→` - Next move
-- `SPACE` - Play/Pause
-- `HOME` - First move
-- `END` - Last move
-- `ESC` - Exit replay
+### View Options
+| Key | Action |
+|-----|--------|
+| `M` | Toggle sound |
+| `Alt` | Show menu bar |
+| `F11` | Toggle fullscreen (if supported) |
 
-### Settings
-- `M` - Toggle sound
-- `ALT` - Open menus
+## 🖱️ Mouse Controls
 
-## 📊 What Gets Saved
+### Gameplay
+- **Click empty square** - Place piece (if legal move)
+- **Hover over square** - Highlight move preview
+- **Click menu item** - Execute menu action
 
-### Automatically Saved:
-- Per-difficulty statistics
-- Theme preference
-- Font size
-- Grid on/off
-- Move preview on/off
-- Piece style
-- Sound on/off
-- AI difficulty level
+### Menu Navigation
+- **Click menu** - Open dropdown
+- **Hover menu item** - Highlight option
+- **Click outside menu** - Close menu
 
-### Manual Save:
-- Current game state (S key or Game → Save)
-- Exported games (PGN/JSON)
-
-## 🎯 Tips for Best Experience
-
-1. **Learning to Play:**
-   - Start with Strategy Tutorial (T key)
-   - Use AI Hints (I key) to learn good moves
-   - Try different difficulties (levels 1-6)
-
-2. **Analyzing Games:**
-   - Review with Replay Mode after playing
-   - Check Game Analysis for insights
-   - Export to PGN for external analysis
-
-3. **Accessibility:**
-   - Choose theme that works for you
-   - Adjust font size for comfort
-   - Enable move preview for clarity
-
-4. **Performance Tracking:**
-   - Check Per-Difficulty Stats regularly
-   - Compare win rates across levels
-   - Set personal improvement goals
-
-## 🐛 Troubleshooting
-
-### "No moves to replay"
-- Play some moves before entering replay mode
-
-### "No difficulty stats available"
-- Complete at least one game first
-
-### Can't see hints
-- Make sure hints are enabled (I or H key)
-- Legal moves must exist
-
-### Board looks wrong in replay
-- Exit and re-enter replay mode
-- Check if you're at the correct move index
-
-## 📋 Menu Quick Reference
+## 📊 Game Menus
 
 ### Game Menu
-- New Game, Board Size
-- Undo, Redo
-- Save, Load
-- **Export to PGN** 🆕
-- **Export to JSON** 🆕
+```
+New Game               # Start fresh game
+├── Reset Board        # Clear current game
+Board Size            # Choose board dimensions
+├── 4×4, 6×6, 8×8     # Small to standard
+├── 10×10, 12×12      # Medium boards
+└── 14×14, 16×16      # Large boards
+Save Game             # Export to data/
+Load Game             # Import from data/
+Quit                  # Exit application
+```
 
 ### AI Menu
-- Player Types (Black/White)
-- Computer Level (1-6)
-- **Show Hints** 🆕
+```
+Difficulty Level
+├── Level 1 - Beginner    # Depth 1, quick moves
+├── Level 2 - Easy        # Depth 2
+├── Level 3 - Medium      # Depth 3
+├── Level 4 - Normal      # Depth 4, balanced
+├── Level 5 - Hard        # Depth 5, strong play
+└── Level 6 - Expert      # Depth 6, maximum strength
+
+Play As
+├── Black (Human)         # You play black
+├── White (Human)         # You play white
+└── Both AI               # Watch AI vs AI
+```
+
+### Settings Menu
+```
+Theme
+├── Classic               # Traditional green board
+├── Ocean                 # Blue water theme
+├── Sunset                # Orange/purple palette
+├── Midnight              # Dark mode
+└── Forest                # Green nature theme
+
+Sound Effects
+├── On                    # Enable audio
+└── Off                   # Mute sounds
+
+Move Hints
+├── On                    # Show legal moves
+└── Off                   # Hide hints
+
+Move Preview
+├── On                    # Show piece placement preview
+└── Off                   # Disable preview
+```
 
 ### View Menu
-- Themes (7 options) 🆕
-- **Font Size** 🆕
-- **Piece Style** 🆕
-- **Grid Toggle** 🆕
-- **Move Preview** 🆕
-- Sound
+```
+Analysis Window           # Toggle move-by-move analysis
+Game Statistics          # Per-difficulty stats
+Tutorial                 # Interactive guide
+About                    # Version info
+```
 
-### Help Menu
-- Strategy Tutorial
-- Game Analysis
-- Move Analysis
-- **Replay Mode** 🆕
-- **Per-Difficulty Stats** 🆕
-- About
+## 🎮 Gameplay Tips
 
-## 🎓 Learning Path
+### Opening Strategy
+1. **Control the center** - Occupy central squares early
+2. **Minimize mobility** - Reduce opponent's options
+3. **Avoid edges early** - Unless setting up corner captures
 
-1. **Beginner**
-   - Play on 6x6 board
-   - Enable basic hints (H)
-   - Use Strategy Tutorial (T)
-   - Play vs Level 1-2 AI
+### Mid-Game Tactics
+1. **Corner strategy** - Corners are permanent positions
+2. **Edge control** - Build stable edge formations
+3. **Tempo** - Force opponent to make weak moves
 
-2. **Intermediate**
-   - Move to 8x8 board
-   - Try AI Hints (I) instead of basic hints
-   - Review games with Replay Mode
-   - Play vs Level 3-4 AI
+### Endgame Techniques
+1. **Count pieces** - Know if you need to play aggressive/defensive
+2. **Parity** - Try to make last move
+3. **Sweep edges** - Convert edge positions to corners
 
-3. **Advanced**
-   - 10x10 or larger boards
-   - Use hints only when stuck
-   - Analyze finished games
-   - Challenge Level 5-6 AI
+### Using Analysis
+1. **Move quality** - Green = Excellent, Red = Poor
+2. **Board control** - Track +/- piece advantage
+3. **Mobility** - More options = better position
+4. **Post-game review** - Study mistakes after game
 
-4. **Expert**
-   - Turn off all hints
-   - Focus on corner strategies
-   - Export and analyze games externally
-   - Track improvement via stats
+## 📈 Statistics Tracking
 
-## 💡 Pro Tips
+### Per-Difficulty Stats
+Automatically tracked for each AI level (1-6):
+- **Games played** - Total games against this level
+- **Wins** - Your victories
+- **Losses** - AI victories  
+- **Ties** - Draw games
+- **Win rate** - Percentage of wins
 
-- **Replay Mode** is great for understanding why you lost
-- **AI Hints** show you what the computer would do
-- **Export to PGN** lets you share interesting games
-- **Per-Difficulty Stats** motivate improvement
-- **High Contrast theme** is best for focus
-- **Move Preview** helps avoid misclicks
+Access via: `View → Game Statistics`
+
+### Game Analysis
+After each game, view:
+- Final score breakdown
+- Move quality distribution
+- Corner captures count
+- Edge control metrics
+- Mobility advantage
+- Strategic insights
+
+Access via: Press `G` after game ends
+
+## 💾 Save & Load
+
+### Automatic Saves
+- Settings automatically saved to `config/reversi-settings.json`
+- Statistics updated after each game
+
+### Manual Game Save
+```bash
+# In-game: Press S or Game → Save Game
+# Creates: data/reversi_game_YYYYMMDD_HHMMSS.pgn
+
+# Load saved game: Game → Load Game
+# Select from data/ directory
+```
+
+### Export Formats
+
+**PGN (Portable Game Notation):**
+- Standard chess-like notation
+- Compatible with analysis tools
+- Human-readable text format
+
+**JSON (JavaScript Object Notation):**
+- Programmatic access
+- Full game state
+- Easy parsing for custom tools
+
+## 🔧 Troubleshooting
+
+### Game Won't Start
+```bash
+# Check Python version
+python3 --version  # Should be 3.7+
+
+# Reinstall dependencies
+./setup.sh
+
+# Check pygame installation
+python3 -c "import pygame; print(pygame.ver)"
+```
+
+### Performance Issues
+```bash
+# Reduce AI difficulty
+./play.sh -d 3  # Use level 3 instead of 6
+
+# Disable debug logging
+# Remove --debug flag
+
+# Use smaller board
+./play.sh -s 8  # Standard 8×8 board
+```
+
+### Sound Not Working
+```bash
+# Check sound setting
+# Settings → Sound → On
+
+# Test system audio
+# Verify other apps have sound
+
+# Run without sound
+./play.sh --no-sound
+```
+
+### Settings Not Saving
+```bash
+# Check config directory exists
+ls -la config/
+
+# Check file permissions
+chmod 755 config/
+chmod 644 config/reversi-settings.json
+
+# Check disk space
+df -h
+```
+
+## 🧪 Development Commands
+
+### Running Tests
+```bash
+# All tests
+python3 tests/run_tests.py
+
+# Specific test file
+python3 -m pytest tests/test_board.py -v
+
+# With coverage
+python3 -m pytest --cov=src tests/
+```
+
+### Code Quality
+```bash
+# Linting
+python3 -m flake8 src/ tests/
+
+# Type checking (if mypy installed)
+python3 -m mypy src/
+
+# Format code (if black installed)
+python3 -m black src/ tests/
+```
+
+### AI Benchmarking
+```bash
+# Verify AI difficulty levels
+python3 tests/verify_ai_levels.py
+
+# Test specific level
+python3 tests/test_ai_levels.py -v
+```
+
+## 📚 File Structure Reference
+
+```
+HB_Reversi/
+├── main.py                     # Entry point
+├── play.sh                     # Launcher script
+├── setup.sh                    # Setup script
+├── requirements.txt            # Dependencies
+├── .flake8                     # Linting config
+│
+├── src/                        # Source code
+│   ├── Reversi.py             # Main game (5100+ lines)
+│   ├── config.py              # Configuration
+│   ├── logger.py              # Logging system
+│   └── error_handling.py      # Error handling
+│
+├── tests/                      # Test suite
+│   ├── run_tests.py           # Test runner
+│   ├── test_*.py              # Test files
+│   └── verify_ai_levels.py    # AI benchmarking
+│
+├── docs/                       # Documentation
+│   ├── DEVELOPMENT.md         # Dev guide
+│   ├── QUICK_REFERENCE.md     # This file
+│   └── *.md                   # Other docs
+│
+├── config/                     # Runtime config
+│   └── reversi-settings.json  # User settings
+│
+├── data/                       # Game data
+│   └── *.pgn, *.json          # Saved games
+│
+└── assets/                     # Game assets
+    └── reversi-icon.png       # App icon
+```
+
+## 🔗 Additional Resources
+
+- **README.md** - Project overview and installation
+- **DEVELOPMENT.md** - Architecture and technical details
+- **CONTRIBUTING.md** - Contribution guidelines
+- **IMPLEMENTATION_SUMMARY.md** - Feature implementation notes
 
 ---
 
-Enjoy the enhanced Reversi Deluxe experience! 🎉
+**Version:** 2.0.0  
+**Last Updated:** November 19, 2025  
+**For More Help:** See docs/README.md

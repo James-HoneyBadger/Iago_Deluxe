@@ -5,7 +5,6 @@ Provides centralized logging configuration with file and console handlers
 """
 import logging
 import logging.handlers
-import os
 import sys
 from typing import Optional
 
@@ -76,7 +75,8 @@ class GameLogger:
         logger.info("=" * 60)
         logger.info("Reversi Deluxe - Logging system initialized")
         logger.info(
-            f"Console level: {console_level}, File level: {log_config.LOG_LEVEL_FILE}"
+            f"Console level: {console_level}, "
+            f"File level: {log_config.LOG_LEVEL_FILE}"
         )
         logger.info("=" * 60)
 

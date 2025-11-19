@@ -5,11 +5,12 @@ Tests move validation, game state, and board operations
 """
 import sys
 import os
+import unittest
 
+# Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import unittest
-from src.Reversi import Board, Move, EMPTY, BLACK, WHITE
+from src.Reversi import Board, EMPTY, BLACK, WHITE  # noqa: E402, F401
 
 
 class TestBoardInitialization(unittest.TestCase):

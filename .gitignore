@@ -129,9 +129,9 @@ dmypy.json
 .pyre/
 
 # Game-specific files
-assets/reversi-settings.json
-assets/*.pgn
-*.save
+config/reversi-settings.json
+data/*.pgn
+data/*.save
 *.desktop
 
 # IDE and editor files

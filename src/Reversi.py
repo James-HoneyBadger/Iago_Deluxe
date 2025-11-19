@@ -51,7 +51,7 @@ import struct
 import sys
 import time
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple, Dict
+from typing import Callable, List, Optional, Tuple, Dict
 
 import pygame as pg
 
@@ -532,7 +532,7 @@ class AI:
 
 
 # ----------------------------- Settings & SFX ------------------------------ #
-SETTINGS_FILE = "assets/reversi-settings.json"
+SETTINGS_FILE = "config/reversi-settings.json"
 ICON_PNG = "assets/reversi-icon.png"
 
 
@@ -801,9 +801,6 @@ class Particle:
     color_id: int
 
 
-from typing import Callable
-
-
 @dataclass
 class MenuItem:
     label: str
@@ -937,7 +934,10 @@ class MoveAnalysisDisplay:
             "",
             f"Board Control Before: {analysis.board_control_before:.1f}%",
             f"Board Control After: {analysis.board_control_after:.1f}%",
-            f"Control Change: {analysis.board_control_after - analysis.board_control_before:+.1f}%",
+            (
+                f"Control Change: "
+                f"{analysis.board_control_after - analysis.board_control_before:+.1f}%"
+            ),
             "",
             f"Corners Controlled: {analysis.corner_moves}",
             f"Edge Pieces: {analysis.edge_moves}",
@@ -1095,13 +1095,22 @@ class StrategyTutorial:
         self.steps = [
             TutorialStep(
                 title="Corner Strategy",
-                description="Corners are the most valuable squares - they can never be flipped!",
+                description=(
+                    "Corners are the most valuable squares - "
+                    "they can never be flipped!"
+                ),
                 board_highlight=[(0, 0), (0, 7), (7, 0), (7, 7)],
-                explanation="Always try to capture corners when possible. They provide permanent control.",
+                explanation=(
+                    "Always try to capture corners when possible. "
+                    "They provide permanent control."
+                ),
             ),
             TutorialStep(
                 title="Edge Control",
-                description="Edges are also valuable - they're harder to flip than center squares.",
+                description=(
+                    "Edges are also valuable - "
+                    "they're harder to flip than center squares."
+                ),
                 board_highlight=[
                     (0, 1),
                     (0, 2),
@@ -1112,23 +1121,43 @@ class StrategyTutorial:
                     (5, 0),
                     (6, 0),
                 ],
-                explanation="Control edges to limit your opponent's options and build stable positions.",
+                explanation=(
+                    "Control edges to limit your opponent's options "
+                    "and build stable positions."
+                ),
             ),
             TutorialStep(
                 title="Avoid C and X Squares",
-                description="These squares next to corners often give your opponent corner access!",
+                description=(
+                    "These squares next to corners often give "
+                    "your opponent corner access!"
+                ),
                 board_highlight=[(0, 1), (1, 0), (1, 1), (0, 6), (1, 6), (1, 7)],
-                explanation="Be very careful about playing adjacent to corners - it often backfires.",
+                explanation=(
+                    "Be very careful about playing adjacent to corners - "
+                    "it often backfires."
+                ),
             ),
             TutorialStep(
                 title="Mobility Strategy",
-                description="Sometimes having fewer pieces gives you more move options!",
-                explanation="Don't always grab the most pieces. Focus on maintaining good move options.",
+                description=(
+                    "Sometimes having fewer pieces gives you " "more move options!"
+                ),
+                explanation=(
+                    "Don't always grab the most pieces. "
+                    "Focus on maintaining good move options."
+                ),
             ),
             TutorialStep(
                 title="Endgame Technique",
-                description="In the endgame, count carefully and force your opponent into bad moves.",
-                explanation="Practice counting ahead and calculating the final score before the game ends.",
+                description=(
+                    "In the endgame, count carefully and "
+                    "force your opponent into bad moves."
+                ),
+                explanation=(
+                    "Practice counting ahead and calculating "
+                    "the final score before the game ends."
+                ),
             ),
         ]
 
@@ -1491,12 +1520,9 @@ class MenuSystem:
         if theme["name"] in ["midnight"]:
             menu_bg = (45, 45, 50)
             border_color = (65, 65, 75)
-            separator_color = (55, 55, 60)
         else:
             menu_bg = theme["hud"]
             border_color = tuple(max(0, c - 40) for c in theme["hud"])
-            separator_color = tuple(max(0, c - 20) for c in theme["hud"])
-
         # Clean menu bar background
         menu_rect = pg.Rect(0, 0, screen.get_width(), MENU_BAR_HEIGHT)
         pg.draw.rect(screen, menu_bg, menu_rect)
@@ -1741,7 +1767,6 @@ class MenuSystem:
         # Up/Down arrows - navigate menu items
         elif key == pg.K_UP:
             # Move up, skip disabled items
-            original_index = self.selected_item_index
             for _ in range(len(self.active_menu.items)):
                 self.selected_item_index = (self.selected_item_index - 1) % len(
                     self.active_menu.items
@@ -2404,7 +2429,8 @@ class GameAnalysisDisplay:
         lines.append(f"Duration: {minutes}:{seconds:02d}")
         lines.append(f"Total moves: {analysis.total_moves}")
         lines.append(
-            f"Final score: Black {analysis.final_score[0]} - {analysis.final_score[1]} White"
+            f"Final score: Black {analysis.final_score[0]} - "
+            f"{analysis.final_score[1]} White"
         )
         lines.append(f"Winner: {analysis.winner}")
         lines.append(f"Opening: {analysis.opening_classification}")
@@ -2451,8 +2477,6 @@ class GameAnalysisDisplay:
 
         # Check if corner (using actual board size)
         is_corner = entry.row in [0, max_index] and entry.col in [0, max_index]
-        # Check if edge
-        is_edge = entry.row in [0, max_index] or entry.col in [0, max_index]
 
         # Simple heuristic based on pieces captured and position
         if is_corner:
@@ -2934,10 +2958,10 @@ class GameExporter:
         timestamp = time.strftime("%Y%m%d_%H%M%S")
 
         if format_type == "pgn":
-            filename = f"assets/reversi_game_{timestamp}.pgn"
+            filename = f"data/reversi_game_{timestamp}.pgn"
             content = GameExporter.export_to_pgn(game)
         else:  # json
-            filename = f"assets/reversi_game_{timestamp}.json"
+            filename = f"data/reversi_game_{timestamp}.json"
             content = GameExporter.export_to_json(game)
 
         try:
@@ -2985,7 +3009,8 @@ class Game:
             return
         try:
             # Simple generated icon
-            import PIL.Image, PIL.ImageDraw
+            import PIL.Image
+            import PIL.ImageDraw
 
             img = PIL.Image.new("RGBA", (256, 256), (0, 0, 0, 0))
             d = PIL.ImageDraw.Draw(img)
@@ -3316,7 +3341,6 @@ class Game:
         # Tiny corner indicators - much more subtle
         dot_size = 2
         margin = cell // 6
-        dot_color = (255, 255, 255, 80)
 
         # Four small corner dots
         corners = [
@@ -3366,14 +3390,6 @@ class Game:
         # Draw spinner circle
         pg.draw.circle(
             self.screen, theme["grid"], (spinner_x, spinner_y), spinner_radius, 3
-        )
-
-        # Draw rotating arc
-        arc_rect = pg.Rect(
-            spinner_x - spinner_radius,
-            spinner_y - spinner_radius,
-            spinner_radius * 2,
-            spinner_radius * 2,
         )
 
         # Draw arc segments
@@ -3477,7 +3493,7 @@ class Game:
                 emoji_surf = emoji_font.render(emoji, True, (0, 0, 0))
                 emoji_rect = emoji_surf.get_rect(center=(center_x, center_y))
                 surf.blit(emoji_surf, emoji_rect)
-            except:
+            except (OSError, pg.error):
                 # Fallback if emoji font not available
                 base_color = (20, 20, 20) if color == BLACK else (245, 245, 245)
                 pg.draw.circle(surf, base_color, (center_x, center_y), radius)
@@ -3752,7 +3768,10 @@ class Game:
         stat_lines = [
             f"Games Played: {stats.games_played}",
             f"Win Rate: {stats.win_rate:.1%}",
-            f"Wins: {stats.games_won} | Losses: {stats.games_lost} | Ties: {stats.games_tied}",
+            (
+                f"Wins: {stats.games_won} | Losses: {stats.games_lost} | "
+                f"Ties: {stats.games_tied}"
+            ),
             f"Best Score: {stats.best_score}",
             f"Avg Score: {stats.average_score:.1f}",
             f"Avg Game Length: {stats.average_game_length:.1f} min",
@@ -3917,7 +3936,10 @@ class Game:
                     break
 
                 # Format move info
-                move_text = f"Move {analysis.move_number}: {chr(ord('A') + analysis.col)}{analysis.row + 1}"
+                col_letter = chr(ord("A") + analysis.col)
+                move_text = (
+                    f"Move {analysis.move_number}: " f"{col_letter}{analysis.row + 1}"
+                )
                 quality_color = {
                     "Excellent": theme["accent"],
                     "Good": (100, 200, 100),
@@ -4021,7 +4043,10 @@ class Game:
         # Create move status with optional analysis
         base_status = f"{NAME[OPP[self.board.to_move]]} played {(r+1)}{chr(ord('A')+c)}"
         if self.ui.show_move_analysis and move_analysis:
-            analysis_text = f" - {move_analysis.move_quality} move ({move_analysis.pieces_captured} pieces)"
+            analysis_text = (
+                f" - {move_analysis.move_quality} move "
+                f"({move_analysis.pieces_captured} pieces)"
+            )
             self.ui.status = base_status + analysis_text
         else:
             self.ui.status = base_status
@@ -4627,7 +4652,10 @@ class Game:
                         if stats.games_played > 0
                         else "  Win rate: N/A"
                     ),
-                    f"  Wins: {stats.games_won} | Losses: {stats.games_lost} | Ties: {stats.games_tied}",
+                    (
+                        f"  Wins: {stats.games_won} | "
+                        f"Losses: {stats.games_lost} | Ties: {stats.games_tied}"
+                    ),
                 ]
 
                 for line in stat_lines:
@@ -4681,7 +4709,8 @@ class Game:
         self.settings.show_move_preview = not self.settings.show_move_preview
         self.settings.save()
         self.menu_system.setup_menus()
-        self.ui.status = f"Move preview {'enabled' if self.settings.show_move_preview else 'disabled'}"
+        preview_status = "enabled" if self.settings.show_move_preview else "disabled"
+        self.ui.status = f"Move preview {preview_status}"
 
     def on_make_desktop(self):
         try:
@@ -4958,8 +4987,6 @@ Examples:
 
 def main(argv: List[str] = None):
     """Main entry point with enhanced argument parsing and error handling"""
-    import logging
-
     # Parse arguments
     args = parse_arguments()
 
@@ -4983,7 +5010,7 @@ def main(argv: List[str] = None):
         if args.size is not None:
             if args.size < 4 or args.size > 16 or args.size % 2 != 0:
                 print(
-                    f"Error: Board size must be even number between 4 and 16",
+                    "Error: Board size must be even number between 4 and 16",
                     file=sys.stderr,
                 )
                 return 2
