@@ -23,27 +23,35 @@ fi
 
 echo "✅ Python $python_version found"
 
-# Check if pip is installed
-if ! command -v pip3 &> /dev/null; then
-    echo "❌ pip3 is required but not installed."
-    echo "Please install pip3 and try again."
-    exit 1
+# Create virtual environment if it doesn't exist
+if [ ! -d ".venv" ]; then
+    echo "📦 Creating virtual environment..."
+    python3 -m venv .venv
+    if [ $? -ne 0 ]; then
+        echo "❌ Failed to create virtual environment"
+        echo "You may need to install python3-venv package"
+        exit 1
+    fi
+    echo "✅ Virtual environment created"
 fi
 
-echo "✅ pip3 found"
-
-# Install dependencies
-echo "📦 Installing dependencies..."
-if pip3 install -r requirements.txt; then
+# Activate virtual environment and install dependencies
+echo "📦 Installing dependencies in virtual environment..."
+if .venv/bin/pip install -r requirements.txt; then
     echo "✅ Dependencies installed successfully"
 else
     echo "❌ Failed to install dependencies"
-    echo "You may need to run: pip3 install pygame"
-    exit 1
+    echo "Trying with --user flag..."
+    if pip3 install --user -r requirements.txt; then
+        echo "✅ Dependencies installed in user directory"
+    else
+        echo "❌ Installation failed. Please install pygame manually."
+        exit 1
+    fi
 fi
 
 # Check if pygame was installed correctly
-if python3 -c "import pygame" 2>/dev/null; then
+if .venv/bin/python3 -c "import pygame" 2>/dev/null || python3 -c "import pygame" 2>/dev/null; then
     echo "✅ Pygame installed and working"
 else
     echo "❌ Pygame installation failed"
@@ -57,10 +65,14 @@ echo ""
 echo "🎉 Setup complete!"
 echo ""
 echo "To play Reversi Deluxe:"
-echo "  python3 main.py"
+echo "  .venv/bin/python3 main.py    # Using virtual environment (recommended)"
+echo "  python3 main.py              # Using system Python"
 echo ""
-echo "Or make it executable and run directly:"
-echo "  ./main.py"
+echo "Or create a launcher script:"
+echo "  echo '#!/bin/bash' > play.sh"
+echo "  echo 'cd \$(dirname \$0) && .venv/bin/python3 main.py \"\$@\"' >> play.sh"
+echo "  chmod +x play.sh"
+echo "  ./play.sh"
 echo ""
 echo "Controls:"
 echo "  V - Toggle move analysis"
