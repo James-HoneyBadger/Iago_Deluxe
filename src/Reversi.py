@@ -3183,26 +3183,27 @@ class Game:
             self.screen, shadow_color, shadow_rect, 2, border_radius=BORDER_RADIUS - 2
         )
 
-        # Clean, minimal grid lines
-        grid_color = theme["grid"]
-        line_width = 1
-        for i in range(1, self.board.size):  # Skip outer border lines
-            x = board_rect.left + i * cell
-            y = board_rect.top + i * cell
-            pg.draw.line(
-                self.screen,
-                grid_color,
-                (x, board_rect.top + 2),
-                (x, board_rect.bottom - 2),
-                line_width,
-            )
-            pg.draw.line(
-                self.screen,
-                grid_color,
-                (board_rect.left + 2, y),
-                (board_rect.right - 2, y),
-                line_width,
-            )
+        # Clean, minimal grid lines (only if enabled)
+        if self.settings.show_grid:
+            grid_color = theme["grid"]
+            line_width = 1
+            for i in range(1, self.board.size):  # Skip outer border lines
+                x = board_rect.left + i * cell
+                y = board_rect.top + i * cell
+                pg.draw.line(
+                    self.screen,
+                    grid_color,
+                    (x, board_rect.top + 2),
+                    (x, board_rect.bottom - 2),
+                    line_width,
+                )
+                pg.draw.line(
+                    self.screen,
+                    grid_color,
+                    (board_rect.left + 2, y),
+                    (board_rect.right - 2, y),
+                    line_width,
+                )
 
     def draw_game_pieces(self, board_rect, cell):
         """Draw all game pieces on the board with animations"""
