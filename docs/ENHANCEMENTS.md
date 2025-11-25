@@ -1,7 +1,7 @@
-# Reversi Deluxe - UX/Visual Enhancements
+# Iago Deluxe - UX/Visual Enhancements
 
 ## Overview
-This document describes the major enhancements implemented to improve the user experience, visual polish, and accessibility of Reversi Deluxe.
+This document describes the major enhancements implemented to improve the user experience, visual polish, and accessibility of Iago Deluxe.
 
 ---
 
@@ -85,7 +85,7 @@ This document describes the major enhancements implemented to improve the user e
 **Usage:**
 - Game → Export to PGN
 - Game → Export to JSON
-- Files saved to `data/` directory with timestamp: `reversi_game_YYYYMMDD_HHMMSS.pgn/json`
+- Files saved to `data/` directory with timestamp: `iago_game_YYYYMMDD_HHMMSS.pgn/json`
 
 **PGN Format Includes:**
 - Event, Date, Players, Result
@@ -439,7 +439,7 @@ These features have infrastructure but need full implementation:
 
 ## Configuration Files
 
-All new settings automatically save to `reversi-settings.json`:
+All new settings automatically save to `iago-settings.json`:
 
 ```json
 {

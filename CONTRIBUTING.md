@@ -211,7 +211,7 @@ python3 -m pytest --cov=src --cov-report=html tests/
 Example:
 ```python
 import pytest
-from src.Reversi import Board
+from src.Iago import Board
 
 def test_initial_board_setup():
     """Test that board initializes with correct starting position."""

@@ -1,46 +1,38 @@
 #!/usr/bin/env python3
 """
-Error handling utilities for Reversi Deluxe
+Error handling utilities for Iago Deluxe
 Provides custom exceptions and error handling helpers
 """
-from typing import Optional, Any, Callable
+from typing import Any, Callable
 from functools import wraps
 import json
 
-from logger import get_logger
+from .logger import get_logger
+
+from . import config
 
 logger = get_logger(__name__)
 
 
 # Custom Exceptions
-class ReversiError(Exception):
-    """Base exception for Reversi game errors"""
-
-    pass
+class IagoError(Exception):
+    """Base exception for Iago game errors"""
 
 
-class InvalidMoveError(ReversiError):
+class InvalidMoveError(IagoError):
     """Raised when an invalid move is attempted"""
 
-    pass
 
-
-class InvalidBoardStateError(ReversiError):
+class InvalidBoardStateError(IagoError):
     """Raised when board state is corrupted or invalid"""
 
-    pass
 
-
-class SaveFileError(ReversiError):
+class SaveFileError(IagoError):
     """Raised when save file operations fail"""
 
-    pass
 
-
-class ConfigurationError(ReversiError):
+class ConfigurationError(IagoError):
     """Raised when configuration is invalid"""
-
-    pass
 
 
 # Error handling decorators
@@ -72,7 +64,7 @@ def handle_file_errors(
             except OSError as e:
                 logger.error(f"{error_message} - OS error: {e}")
                 return default_return
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 logger.error(f"{error_message} - Unexpected error: {e}", exc_info=True)
                 return default_return
 
@@ -99,7 +91,7 @@ def safe_execute(
     """
     try:
         return func(*args, **kwargs)
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         msg = error_msg or f"Error executing {func.__name__}"
         logger.error(f"{msg}: {e}", exc_info=True)
         return default
@@ -115,15 +107,19 @@ def validate_board_size(size: int) -> bool:
     Returns:
         True if valid, False otherwise
     """
-    from config import game_config
 
     if not isinstance(size, int):
         logger.warning(f"Board size must be integer, got {type(size)}")
         return False
 
-    if size < game_config.MIN_BOARD_SIZE or size > game_config.MAX_BOARD_SIZE:
+    if (
+        size < config.game_config.MIN_BOARD_SIZE
+        or size > config.game_config.MAX_BOARD_SIZE
+    ):
         logger.warning(
-            f"Board size {size} outside valid range [{game_config.MIN_BOARD_SIZE}, {game_config.MAX_BOARD_SIZE}]"
+            f"Board size {size} outside valid range "
+            f"[{config.game_config.MIN_BOARD_SIZE}, "
+            f"{config.game_config.MAX_BOARD_SIZE}]"
         )
         return False
 
@@ -135,6 +131,7 @@ def validate_board_size(size: int) -> bool:
 
 
 def validate_save_file(data: dict) -> bool:
+    # pylint: disable=too-many-return-statements
     """
     Validate save file structure
 
@@ -193,15 +190,19 @@ def validate_ai_depth(depth: int) -> bool:
     Returns:
         True if valid, False otherwise
     """
-    from config import game_config
 
     if not isinstance(depth, int):
         logger.warning(f"AI depth must be integer, got {type(depth)}")
         return False
 
-    if depth < game_config.MIN_AI_DEPTH or depth > game_config.MAX_AI_DEPTH:
+    if (
+        depth < config.game_config.MIN_AI_DEPTH
+        or depth > config.game_config.MAX_AI_DEPTH
+    ):
         logger.warning(
-            f"AI depth {depth} outside valid range [{game_config.MIN_AI_DEPTH}, {game_config.MAX_AI_DEPTH}]"
+            f"AI depth {depth} outside valid range "
+            f"[{config.game_config.MIN_AI_DEPTH}, "
+            f"{config.game_config.MAX_AI_DEPTH}]"
         )
         return False
 
@@ -218,10 +219,10 @@ def validate_theme(theme: str) -> bool:
     Returns:
         True if valid, False otherwise
     """
-    from config import THEMES
-
-    if theme not in THEMES:
-        logger.warning(f"Unknown theme: {theme}. Available: {list(THEMES.keys())}")
+    if theme not in config.THEMES:
+        logger.warning(
+            f"Unknown theme: {theme}. Available: {list(config.THEMES.keys())}"
+        )
         return False
 
     return True
@@ -248,6 +249,5 @@ class ErrorContext:
         if exc_type is not None:
             self.logger.error(f"Failed: {self.operation} - {exc_val}", exc_info=True)
             return not self.reraise
-        else:
-            self.logger.debug(f"Completed: {self.operation}")
+        self.logger.debug(f"Completed: {self.operation}")
         return False

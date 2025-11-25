@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Configuration module for Reversi Deluxe
+Configuration module for Iago Deluxe
 Centralized configuration for easier modification and maintenance
 """
 from dataclasses import dataclass
@@ -8,7 +8,7 @@ from typing import Dict, Tuple
 
 
 @dataclass
-class GameConfig:
+class GameConfig:  # pylint: disable=invalid-name
     """Game logic configuration"""
 
     # Board settings
@@ -32,7 +32,7 @@ class GameConfig:
 
 
 @dataclass
-class UIConfig:
+class UIConfig:  # pylint: disable=too-many-instance-attributes,invalid-name
     """User interface configuration"""
 
     # Window settings
@@ -70,17 +70,17 @@ class UIConfig:
 
 
 @dataclass
-class FileConfig:
+class FileConfig:  # pylint: disable=too-few-public-methods,invalid-name
     """File paths and names"""
 
-    SETTINGS_FILE: str = "reversi-settings.json"
-    ICON_PNG: str = "reversi-icon.png"
-    LOG_FILE: str = "reversi.log"
+    SETTINGS_FILE: str = "iago-settings.json"
+    ICON_PNG: str = "iago-icon.png"
+    LOG_FILE: str = "iago.log"
     SAVE_GAME_EXTENSION: str = ".rsv"
 
 
 # Color definitions
-class Colors:
+class Colors:  # pylint: disable=invalid-name
     """Color constants"""
 
     # Game pieces
@@ -174,7 +174,7 @@ DIRECTIONS: Tuple[Tuple[int, int], ...] = (
 
 # Logging configuration
 @dataclass
-class LogConfig:
+class LogConfig:  # pylint: disable=invalid-name
     """Logging configuration"""
 
     LOG_LEVEL_CONSOLE: str = "INFO"  # Console log level

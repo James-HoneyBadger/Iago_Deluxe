@@ -11,7 +11,7 @@ This document summarizes the reorganization of the Iago Deluxe project structure
 
 ### New Directories Created
 - **`config/`** - Runtime configuration files
-  - Moved: `reversi-settings.json` (from assets/)
+  - Moved: `iago-settings.json` (from assets/)
   
 - **`data/`** - Game data storage
   - Moved: `*.pgn` and `*.json` game saves (from assets/)
@@ -26,14 +26,14 @@ This document summarizes the reorganization of the Iago Deluxe project structure
 ## File Changes
 
 ### Code Updates
-1. **`src/Reversi.py`**
-   - Updated `SETTINGS_FILE` path: `assets/reversi-settings.json` → `config/reversi-settings.json`
-   - Updated save paths: `assets/reversi_game_*.pgn` → `data/reversi_game_*.pgn`
-   - Updated save paths: `assets/reversi_game_*.json` → `data/reversi_game_*.json`
+1. **`src/Iago.py`**
+   - Updated `SETTINGS_FILE` path: `assets/iago-settings.json` → `config/iago-settings.json`
+   - Updated save paths: `assets/iago_game_*.pgn` → `data/iago_game_*.pgn`
+   - Updated save paths: `assets/iago_game_*.json` → `data/iago_game_*.json`
 
 2. **`.gitignore`**
    - Updated paths to reflect new structure
-   - `assets/reversi-settings.json` → `config/reversi-settings.json`
+   - `assets/iago-settings.json` → `config/iago-settings.json`
    - `assets/*.pgn` → `data/*.pgn`
    - `*.save` → `data/*.save`
 
@@ -126,17 +126,17 @@ If you were working on the code:
 ```
 Iago_Deluxe/
 ├── config/
-│   └── reversi-settings.json      # User preferences
+│   └── iago-settings.json         # User preferences
 │
 ├── data/
 │   ├── *.pgn                      # Saved games (PGN)
 │   └── *.json                     # Saved games (JSON)
 │
 ├── assets/
-│   └── reversi-icon.png          # App icon
+│   └── iago-icon.png             # App icon
 │
 ├── src/
-│   ├── Reversi.py                # Main game
+│   ├── Iago.py                   # Main game
 │   ├── config.py                 # Configuration
 │   ├── logger.py                 # Logging
 │   └── error_handling.py         # Error handling

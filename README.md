@@ -101,7 +101,7 @@ Iago_Deluxe/
 │
 ├── src/                     # Source code
 │   ├── __init__.py
-│   ├── Reversi.py          # Main game implementation (5000+ lines)
+│   ├── Iago.py             # Main game implementation (5000+ lines)
 │   ├── config.py           # Configuration constants and settings
 │   ├── logger.py           # Logging system with file rotation
 │   └── error_handling.py   # Custom exceptions and validation
@@ -126,10 +126,10 @@ Iago_Deluxe/
 │   └── MENU_IMPROVEMENTS.txt      # UI enhancement notes
 │
 ├── assets/                  # Game assets
-│   └── reversi-icon.png    # Application icon
+│   └── iago-icon.png       # Application icon
 │
 ├── config/                  # Runtime configuration
-│   └── reversi-settings.json  # User preferences (auto-generated)
+│   └── iago-settings.json   # User preferences (auto-generated)
 │
 └── data/                    # Game data
     └── *.pgn, *.json       # Saved games (auto-generated)

@@ -11,12 +11,12 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-def run_tests(verbosity=2):
+def run_tests(verbosity_level=2):
     """
     Run all tests in the tests directory
 
     Args:
-        verbosity: Verbosity level (0=quiet, 1=normal, 2=verbose)
+        verbosity_level: Verbosity level (0=quiet, 1=normal, 2=verbose)
 
     Returns:
         True if all tests passed, False otherwise
@@ -26,7 +26,7 @@ def run_tests(verbosity=2):
     start_dir = os.path.dirname(os.path.abspath(__file__))
     suite = loader.discover(start_dir, pattern="test_*.py")
 
-    runner = unittest.TextTestRunner(verbosity=verbosity)
+    runner = unittest.TextTestRunner(verbosity=verbosity_level)
     result = runner.run(suite)
 
     # Print summary
@@ -41,23 +41,22 @@ def run_tests(verbosity=2):
     if result.wasSuccessful():
         print("\n✓ All tests passed!")
         return True
-    else:
-        print("\n✗ Some tests failed")
-        return False
+    print("\n✗ Some tests failed")
+    return False
 
 
-def run_specific_test(test_module, verbosity=2):
+def run_specific_test(test_module, verbosity_level=2):
     """
     Run tests from a specific module
 
     Args:
         test_module: Module name (e.g., 'test_board')
-        verbosity: Verbosity level
+        verbosity_level: Verbosity level
     """
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromName(test_module)
 
-    runner = unittest.TextTestRunner(verbosity=verbosity)
+    runner = unittest.TextTestRunner(verbosity=verbosity_level)
     result = runner.run(suite)
 
     return result.wasSuccessful()
@@ -77,16 +76,16 @@ if __name__ == "__main__":
 
     # Determine verbosity
     if args.quiet:
-        verbosity = 0
+        verbosity = 0  # noqa: C0103
     elif args.verbose:
-        verbosity = 2
+        verbosity = 2  # noqa: C0103
     else:
-        verbosity = 1
+        verbosity = 1  # noqa: C0103
 
     # Run tests
     if args.module:
-        success = run_specific_test(args.module, verbosity)
+        success = run_specific_test(args.module, verbosity)  # noqa: C0103
     else:
-        success = run_tests(verbosity)
+        success = run_tests(verbosity)  # noqa: C0103
 
     sys.exit(0 if success else 1)

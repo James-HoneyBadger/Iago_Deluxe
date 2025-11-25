@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
-Logging utility for Reversi Deluxe
+Logging utility for Iago Deluxe
 Provides centralized logging configuration with file and console handlers
 """
 import logging
 import logging.handlers
 import sys
+import time
+from functools import wraps
 from typing import Optional
 
 from src.config import file_config, log_config
@@ -122,8 +124,6 @@ def get_logger(name: str) -> logging.Logger:
 # Performance logging decorator
 def log_performance(func):
     """Decorator to log function execution time"""
-    import time
-    from functools import wraps
 
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -142,8 +142,7 @@ def log_performance(func):
     return wrapper
 
 
-# Exception logging context manager
-class log_exceptions:
+class LogExceptions:  # pylint: disable=invalid-name
     """Context manager for logging exceptions"""
 
     def __init__(self, logger: logging.Logger, message: str = "Exception occurred"):

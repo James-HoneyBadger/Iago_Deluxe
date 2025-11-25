@@ -6,7 +6,7 @@ import pytest
 
 import tests._helpers  # noqa: F401  # pylint: disable=unused-import
 
-from src.Reversi import Game, Board, Settings
+from src.Iago import Game, Board, Settings
 
 
 def test_move_analysis_toggle():

@@ -1,9 +1,9 @@
-# Implementation Summary - Reversi Deluxe Improvements
+# Implementation Summary - Iago Deluxe Improvements
 
 ## ✅ All Tasks Completed Successfully
 
 ### Overview
-Successfully implemented **5 major improvements** to the Reversi Deluxe project, adding **1,531 lines** of new code across **8 new files**.
+Successfully implemented **5 major improvements** to the Iago Deluxe project, adding **1,531 lines** of new code across **8 new files**.
 
 ---
 
@@ -60,7 +60,7 @@ def expensive_function():
 
 **Features:**
 - Custom exception classes:
-  - `ReversiError` (base)
+  - `IagoError` (base)
   - `InvalidMoveError`
   - `InvalidBoardStateError`
   - `SaveFileError`
@@ -91,7 +91,7 @@ with ErrorContext("Loading game"):
 ---
 
 ### 4. ✅ Enhance CLI with argparse (Better Usability)
-**File Modified**: `Reversi.py` (+226 lines in main function)
+**File Modified**: `Iago.py` (+226 lines in main function)
 
 **New Command-Line Options:**
 
@@ -110,10 +110,10 @@ with ErrorContext("Loading game"):
 
 **Usage Examples:**
 ```bash
-python3 Reversi.py --help
-python3 Reversi.py -s 10 -d 5 -t midnight
-python3 Reversi.py --load game.rsv --debug
-python3 Reversi.py --ai-black --ai-white  # AI vs AI
+python3 Iago.py --help
+python3 Iago.py -s 10 -d 5 -t midnight
+python3 Iago.py --load game.rsv --debug
+python3 Iago.py --ai-black --ai-white  # AI vs AI
 ```
 
 **Improvements:**
@@ -209,7 +209,7 @@ tests/test_ai.py    242 lines  (AI tests)
 tests/test_settings.py 166 lines (Settings tests)
 tests/run_tests.py   99 lines  (Test runner)
 tests/__init__.py     3 lines  (Package init)
-Reversi.py (main)  +226 lines  (Enhanced CLI)
+Iago.py (main)     +226 lines  (Enhanced CLI)
 ------------------------------------
 Total:            1,629 lines  (new/modified)
 ```
@@ -252,19 +252,19 @@ Total:            1,629 lines  (new/modified)
 ### Basic Usage
 ```bash
 # Start with defaults
-python3 Reversi.py
+python3 Iago.py
 
 # Custom board and difficulty
-python3 Reversi.py --size 10 --difficulty 5
+python3 Iago.py --size 10 --difficulty 5
 
 # Dark theme, no sound
-python3 Reversi.py --theme midnight --no-sound
+python3 Iago.py --theme midnight --no-sound
 
 # AI vs AI match
-python3 Reversi.py --ai-black --ai-white --difficulty 4
+python3 Iago.py --ai-black --ai-white --difficulty 4
 
 # Load saved game with debug logging
-python3 Reversi.py --load mygame.rsv --debug
+python3 Iago.py --load mygame.rsv --debug
 ```
 
 ### Testing
@@ -304,8 +304,8 @@ logger.error("Operation failed", exc_info=True)
 ## 📁 Project Structure
 
 ```
-reversi-deluxe/
-├── Reversi.py              # Main game (enhanced with CLI)
+Iago_Deluxe/
+├── Iago.py                 # Main game (enhanced with CLI)
 ├── config.py               # ✨ NEW: Configuration
 ├── logger.py               # ✨ NEW: Logging system
 ├── error_handling.py       # ✨ NEW: Error handling
@@ -319,7 +319,7 @@ reversi-deluxe/
 ├── README.md               # User documentation
 ├── DEVELOPMENT.md          # Developer notes
 ├── requirements.txt        # Dependencies
-└── reversi.log            # Generated: Log file
+└── iago.log               # Generated: Log file
 ```
 
 ---
@@ -327,7 +327,7 @@ reversi-deluxe/
 ## ✨ Backward Compatibility
 
 All improvements are **fully backward compatible**:
-- Original `Reversi.py` still works standalone
+- Original `Iago.py` still works standalone
 - New modules are optional (graceful fallback)
 - Existing save files remain compatible
 - No breaking changes to core gameplay
@@ -349,7 +349,7 @@ This implementation demonstrates:
 ## 📝 Next Steps (Optional Future Work)
 
 While all requested improvements are complete, potential enhancements:
-1. Split `Reversi.py` into multiple modules
+1. Split `Iago.py` into multiple modules
 2. Add code coverage reporting
 3. Set up CI/CD pipeline
 4. Add type checking (mypy)
@@ -374,7 +374,7 @@ Successfully implemented **all 5 requested improvements**:
 - **+3 utility modules** for maintainability
 - **+370 lines** of documentation
 
-The Reversi Deluxe project is now more **reliable**, **maintainable**, **user-friendly**, and **professional**.
+The Iago Deluxe project is now more **reliable**, **maintainable**, **user-friendly**, and **professional**.
 
 ---
 

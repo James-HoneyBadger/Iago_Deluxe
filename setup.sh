@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Reversi Deluxe Setup Script
-# This script sets up the Reversi game and its dependencies
+# Iago Deluxe Setup Script
+# This script sets up the Iago game and its dependencies
 
-echo "🎮 Setting up Reversi Deluxe..."
+echo "🎮 Setting up Iago Deluxe..."
 
 # Check if Python 3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -64,7 +64,7 @@ chmod +x main.py
 echo ""
 echo "🎉 Setup complete!"
 echo ""
-echo "To play Reversi Deluxe:"
+echo "To play Iago Deluxe:"
 echo "  .venv/bin/python3 main.py    # Using virtual environment (recommended)"
 echo "  python3 main.py              # Using system Python"
 echo ""

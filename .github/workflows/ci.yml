@@ -1,4 +1,4 @@
-name: Reversi Deluxe CI
+name: Iago Deluxe CI
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
     
     - name: Syntax check
       run: |
-        python -m py_compile Reversi.py
+        python -m py_compile Iago.py
     
     - name: Test basic functionality (non-GUI)
       run: |
@@ -51,7 +51,7 @@ jobs:
             pygame.init = lambda: None
             
             # Test core game logic
-            exec(open('Reversi.py').read().split('if __name__')[0])
+            exec(open('Iago.py').read().split('if __name__')[0])
             print('✅ Core game logic imports successfully')
             
             # Test basic classes

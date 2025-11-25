@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Reversi Deluxe - Main Entry Point
+Iago Deluxe - Main Entry Point
 
-A polished, feature-rich implementation of the classic Reversi/Othello
+A polished, feature-rich implementation of the classic Iago/Othello
 board game.
 
 Usage:
@@ -54,6 +54,6 @@ if __name__ == "__main__":
     check_and_install_dependencies()
 
     # Import and run the game
-    from src.Reversi import main
+    from src.Iago import main
 
     main()

@@ -1,1 +1,1 @@
-"""Reversi Deluxe - Source package"""
+"""Iago Deluxe - Source package"""

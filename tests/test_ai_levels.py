@@ -2,9 +2,10 @@
 """
 Test script to verify AI difficulty levels 1-6 function differently
 """
+import sys
 import tests._helpers  # noqa: F401  # pylint: disable=unused-import
 
-from src.Reversi import AI, Board, BLACK
+from src.Iago import AI, Board, BLACK
 
 
 def test_ai_levels():
@@ -98,4 +99,5 @@ def test_ai_levels():
 
 
 if __name__ == "__main__":
-    test_ai_levels()
+    success = test_ai_levels()  # noqa: C0103
+    sys.exit(0 if success else 1)

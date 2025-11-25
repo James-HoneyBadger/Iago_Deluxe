@@ -10,7 +10,7 @@ import tempfile
 
 import tests._helpers  # noqa: F401  # pylint: disable=unused-import
 
-from src.Reversi import Settings, Board
+from src.Iago import Settings, Board
 
 
 class TestSettingsSaveLoad(unittest.TestCase):

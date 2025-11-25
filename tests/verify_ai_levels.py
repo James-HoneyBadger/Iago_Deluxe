@@ -6,7 +6,7 @@ Tests all 6 difficulty levels with multiple scenarios
 import time
 import tests._helpers  # noqa: F401  # pylint: disable=unused-import
 
-from src.Reversi import AI, Board, BLACK
+from src.Iago import AI, Board, BLACK
 
 
 def test_level_performance(level, num_tests=3):

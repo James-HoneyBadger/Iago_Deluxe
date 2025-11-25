@@ -55,7 +55,7 @@ Transformed from flat structure to professional layout:
 **Before (v1.0):**
 ```
 Iago_Deluxe/
-├── Reversi.py              (4,800 lines - everything in one file!)
+├── Iago.py              (4,800 lines - everything in one file!)
 ├── requirements.txt
 └── README.md
 ```
@@ -64,7 +64,7 @@ Iago_Deluxe/
 ```
 Iago_Deluxe/
 ├── src/                    # Source code package
-│   ├── Reversi.py         # Main game (5,100 lines)
+│   ├── Iago.py         # Main game (5,100 lines)
 │   ├── config.py          # Configuration (164 lines)
 │   ├── logger.py          # Logging system (151 lines)
 │   └── error_handling.py  # Error handling (234 lines)
@@ -79,11 +79,11 @@ Iago_Deluxe/
 │   ├── QUICK_REFERENCE.md # User reference
 │   └── IMPROVEMENTS.md    # This file
 ├── config/                 # Runtime configuration
-│   └── reversi-settings.json
+│   └── iago-settings.json
 ├── data/                   # Game data
 │   └── *.pgn, *.json
 ├── assets/                 # Game assets
-│   └── reversi-icon.png
+│   └── iago-icon.png
 ├── main.py                 # Entry point
 ├── play.sh                 # Launcher script
 └── setup.sh                # Installation script
@@ -108,7 +108,7 @@ Iago_Deluxe/
 
 **Old Way (v1.0):**
 ```bash
-python3 Reversi.py
+python3 Iago.py
 ```
 
 **New Way (v2.0):**
@@ -133,7 +133,7 @@ python3 Reversi.py
 **Import System:**
 ```python
 # All imports remain the same
-from src.Reversi import Board, AI, Game
+from src.Iago import Board, AI, Game
 from src.config import game_config
 from src.logger import get_logger
 ```
@@ -141,10 +141,10 @@ from src.logger import get_logger
 **Path Handling:**
 ```python
 # Old (v1.0)
-SETTINGS_FILE = "reversi-settings.json"
+SETTINGS_FILE = "iago-settings.json"
 
 # New (v2.0)
-SETTINGS_FILE = "config/reversi-settings.json"
+SETTINGS_FILE = "config/iago-settings.json"
 # Automatically created if doesn't exist
 ```
 
@@ -243,10 +243,10 @@ THEMES = {
 class FileConfig:
     """File paths and extensions."""
     
-    SETTINGS_FILE: str = "config/reversi-settings.json"
+    SETTINGS_FILE: str = "config/iago-settings.json"
     DATA_DIR: str = "data/"
-    ICON_PATH: str = "assets/reversi-icon.png"
-    LOG_FILE: str = "reversi.log"
+    ICON_PATH: str = "assets/iago-icon.png"
+    LOG_FILE: str = "iago.log"
     
     PGN_EXTENSION: str = ".pgn"
     JSON_EXTENSION: str = ".json"
@@ -336,15 +336,15 @@ logger.info("Game started")
 
 # Output appears in:
 # - Terminal (console)
-# - reversi.log (file)
+# - iago.log (file)
 ```
 
 **2. Automatic Log Rotation**
 ```
-reversi.log       # Current log (max 10MB)
-reversi.log.1     # Previous session
-reversi.log.2     # Older session
-reversi.log.3     # Oldest session (then deleted)
+iago.log       # Current log (max 10MB)
+iago.log.1     # Previous session
+iago.log.2     # Older session
+iago.log.3     # Oldest session (then deleted)
 ```
 
 **3. Hierarchical Log Levels**
@@ -402,7 +402,7 @@ with ErrorContext("Loading save file"):
 logger = get_logger(__name__)
 
 # Logs show source:
-# 2025-11-19 14:30:15,123 - src.Reversi - INFO - Message
+# 2025-11-19 14:30:15,123 - src.Iago - INFO - Message
 # 2025-11-19 14:30:15,124 - src.config - DEBUG - Message  
 # 2025-11-19 14:30:15,125 - src.logger - WARNING - Message
 ```
@@ -411,40 +411,40 @@ logger = get_logger(__name__)
 
 **Normal Game Session:**
 ```log
-2025-11-19 14:30:15,123 - src.Reversi - INFO - ================================
-2025-11-19 14:30:15,124 - src.Reversi - INFO - Iago Deluxe v2.0 starting
-2025-11-19 14:30:15,125 - src.Reversi - INFO - Python 3.13.7, Pygame 2.6.1
-2025-11-19 14:30:15,126 - src.Reversi - DEBUG - Board size: 8×8
-2025-11-19 14:30:15,127 - src.Reversi - DEBUG - AI difficulty: Level 4
-2025-11-19 14:30:15,128 - src.Reversi - INFO - Theme loaded: midnight
-2025-11-19 14:30:15,129 - src.Reversi - INFO - Settings loaded from config/reversi-settings.json
-2025-11-19 14:30:20,456 - src.Reversi - DEBUG - AI thinking...
-2025-11-19 14:30:20,787 - src.Reversi - DEBUG - Evaluated 15,234 positions
-2025-11-19 14:30:20,788 - src.Reversi - DEBUG - Best move: (2, 3) with score 5.2
-2025-11-19 14:30:20,789 - src.Reversi - INFO - AI move: d3 (flipped 1 pieces)
-2025-11-19 14:30:25,123 - src.Reversi - INFO - Human move: c4 (flipped 2 pieces)
-2025-11-19 14:35:42,012 - src.Reversi - INFO - Game ended: Black 42 - White 22
-2025-11-19 14:35:42,013 - src.Reversi - INFO - Winner: Black (Human player)
-2025-11-19 14:35:42,014 - src.Reversi - INFO - Game duration: 5m 27s
+2025-11-19 14:30:15,123 - src.Iago - INFO - ================================
+2025-11-19 14:30:15,124 - src.Iago - INFO - Iago Deluxe v2.0 starting
+2025-11-19 14:30:15,125 - src.Iago - INFO - Python 3.13.7, Pygame 2.6.1
+2025-11-19 14:30:15,126 - src.Iago - DEBUG - Board size: 8×8
+2025-11-19 14:30:15,127 - src.Iago - DEBUG - AI difficulty: Level 4
+2025-11-19 14:30:15,128 - src.Iago - INFO - Theme loaded: midnight
+2025-11-19 14:30:15,129 - src.Iago - INFO - Settings loaded from config/iago-settings.json
+2025-11-19 14:30:20,456 - src.Iago - DEBUG - AI thinking...
+2025-11-19 14:30:20,787 - src.Iago - DEBUG - Evaluated 15,234 positions
+2025-11-19 14:30:20,788 - src.Iago - DEBUG - Best move: (2, 3) with score 5.2
+2025-11-19 14:30:20,789 - src.Iago - INFO - AI move: d3 (flipped 1 pieces)
+2025-11-19 14:30:25,123 - src.Iago - INFO - Human move: c4 (flipped 2 pieces)
+2025-11-19 14:35:42,012 - src.Iago - INFO - Game ended: Black 42 - White 22
+2025-11-19 14:35:42,013 - src.Iago - INFO - Winner: Black (Human player)
+2025-11-19 14:35:42,014 - src.Iago - INFO - Game duration: 5m 27s
 ```
 
 **Error Scenario:**
 ```log
-2025-11-19 14:40:12,345 - src.Reversi - ERROR - Failed to save game
+2025-11-19 14:40:12,345 - src.Iago - ERROR - Failed to save game
 Traceback (most recent call last):
-  File "src/Reversi.py", line 2960, in save_game
+  File "src/Iago.py", line 2960, in save_game
     with open(filename, 'w') as f:
 PermissionError: [Errno 13] Permission denied: 'data/game.pgn'
-2025-11-19 14:40:12,346 - src.Reversi - WARNING - Save failed, retrying with timestamp suffix
-2025-11-19 14:40:12,450 - src.Reversi - INFO - Game saved to data/game_20251119_144012.pgn
+2025-11-19 14:40:12,346 - src.Iago - WARNING - Save failed, retrying with timestamp suffix
+2025-11-19 14:40:12,450 - src.Iago - INFO - Game saved to data/game_20251119_144012.pgn
 ```
 
 **Performance Profiling:**
 ```log
-2025-11-19 15:00:00,123 - src.Reversi - DEBUG - ai_find_best_move started
-2025-11-19 15:00:00,456 - src.Reversi - DEBUG - minimax depth=4 completed in 0.145s
-2025-11-19 15:00:00,457 - src.Reversi - DEBUG - evaluate_position completed in 0.002s
-2025-11-19 15:00:00,458 - src.Reversi - DEBUG - ai_find_best_move completed in 0.335s
+2025-11-19 15:00:00,123 - src.Iago - DEBUG - ai_find_best_move started
+2025-11-19 15:00:00,456 - src.Iago - DEBUG - minimax depth=4 completed in 0.145s
+2025-11-19 15:00:00,457 - src.Iago - DEBUG - evaluate_position completed in 0.002s
+2025-11-19 15:00:00,458 - src.Iago - DEBUG - ai_find_best_move completed in 0.335s
 ```
 
 #### Configuration
@@ -458,7 +458,7 @@ PermissionError: [Errno 13] Permission denied: 'data/game.pgn'
 
 **Method 2 - Environment Variable:**
 ```bash
-export REVERSI_DEBUG=1
+export IAGO_DEBUG=1
 ./play.sh
 ```
 
@@ -515,11 +515,11 @@ setup_logging(
 #### Custom Exception Hierarchy
 
 ```python
-class ReversiError(Exception):
-    """Base exception for all Reversi game errors."""
+class IagoError(Exception):
+    """Base exception for all Iago game errors."""
     pass
 
-class InvalidMoveError(ReversiError):
+class InvalidMoveError(IagoError):
     """Raised when an illegal move is attempted."""
     def __init__(self, row: int, col: int, reason: str):
         self.row = row
@@ -527,19 +527,19 @@ class InvalidMoveError(ReversiError):
         self.reason = reason
         super().__init__(f"Invalid move at ({row}, {col}): {reason}")
 
-class InvalidBoardStateError(ReversiError):
+class InvalidBoardStateError(IagoError):
     """Raised when board state is corrupted."""
     pass
 
-class SaveFileError(ReversiError):
+class SaveFileError(IagoError):
     """Raised when save/load operations fail."""
     pass
 
-class ConfigurationError(ReversiError):
+class ConfigurationError(IagoError):
     """Raised for invalid configuration."""
     pass
 
-class AIError(ReversiError):
+class AIError(IagoError):
     """Raised when AI encounters an error."""
     pass
 ```
@@ -836,7 +836,7 @@ Audio Options:
   --no-sound              Disable sound effects
 
 Debug Options:
-  --debug                 Enable debug logging to reversi.log
+  --debug                 Enable debug logging to iago.log
   --version               Show version information and exit
   -h, --help              Show this help message and exit
 
@@ -1062,7 +1062,7 @@ tests/test_settings.py ............                  [100%]
 ---------- coverage: platform linux, python 3.13.7-final-0 ----------
 Name                          Stmts   Miss  Cover
 -------------------------------------------------
-src/Reversi.py                 2145    278    87%
+src/Iago.py                 2145    278    87%
 src/config.py                    64      0   100%
 src/error_handling.py           112     13    88%
 src/logger.py                    78      8    90%
@@ -1149,14 +1149,14 @@ All AI levels verified!
 **Move old save files:**
 ```bash
 # If you have saves in old location
-mv reversi_game_*.pgn data/
-mv reversi_game_*.json data/
+mv iago_game_*.pgn data/
+mv iago_game_*.json data/
 ```
 
 **Update custom scripts:**
 ```bash
 # Old way
-python3 Reversi.py
+python3 Iago.py
 
 # New way
 ./play.sh

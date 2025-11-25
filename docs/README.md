@@ -49,7 +49,7 @@ Iago_Deluxe/
 ├── CONTRIBUTING.md              # How to contribute
 │
 ├── src/                         # Source code
-│   ├── Reversi.py              # Main game (5100+ lines)
+│   ├── Iago.py                # Main game (5100+ lines)
 │   ├── config.py               # Configuration
 │   ├── logger.py               # Logging system
 │   └── error_handling.py       # Error handling
@@ -65,13 +65,13 @@ Iago_Deluxe/
 │   └── *.md                    # Other documentation
 │
 ├── config/                      # Configuration files
-│   └── reversi-settings.json   # User preferences
+│   └── iago-settings.json      # User preferences
 │
 ├── data/                        # Game data
 │   └── *.pgn, *.json           # Saved games
 │
 └── assets/                      # Game assets
-    └── reversi-icon.png        # Application icon
+    └── iago-icon.png           # Application icon
 ```
 
 ## 🎮 Features Overview

@@ -618,12 +618,12 @@ python3 --version  # Should be 3.7+
 1. **Check directory permissions:**
    ```bash
    ls -la config/
-   # Should show reversi-settings.json
+   # Should show iago-settings.json
    ```
 
 2. **Verify file permissions:**
    ```bash
-   chmod 644 config/reversi-settings.json
+   chmod 644 config/iago-settings.json
    ```
 
 3. **Check disk space:**
@@ -634,7 +634,7 @@ python3 --version  # Should be 3.7+
 4. **Manual settings creation:**
    ```bash
    mkdir -p config
-   touch config/reversi-settings.json
+   touch config/iago-settings.json
    ```
 
 ---
@@ -745,13 +745,13 @@ A: Launch with debug flag:
 ```bash
 ./play.sh --debug
 ```
-Creates detailed log in `reversi.log`.
+Creates detailed log in `iago.log`.
 
 **Q: Where are save files stored?**  
 A: `data/` directory in installation folder:
 ```
 data/
-├── reversi_game_20251119_143000.pgn
+├── iago_game_YYYYMMDD_HHMMSS.pgn
 └── reversi_game_20251119_150000.json
 ```
 
