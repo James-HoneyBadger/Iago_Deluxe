@@ -3,15 +3,10 @@
 Detailed AI Level Verification Report
 Tests all 6 difficulty levels with multiple scenarios
 """
-import sys
 import time
-from pathlib import Path
+import tests._helpers  # noqa: F401  # pylint: disable=unused-import
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
-
-from src.Reversi import AI, Board, BLACK  # noqa: E402
+from src.Reversi import AI, Board, BLACK
 
 
 def test_level_performance(level, num_tests=3):
@@ -43,6 +38,7 @@ def test_level_performance(level, num_tests=3):
 
 
 def main():
+    """Run AI verification report and emit results."""
     print("=" * 70)
     print("REVERSI AI DIFFICULTY LEVEL VERIFICATION")
     print("=" * 70)

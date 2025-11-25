@@ -6,13 +6,12 @@ import pytest
 
 import tests._helpers  # noqa: F401  # pylint: disable=unused-import
 
-pg = pytest.importorskip("pygame")
-
 from src.Reversi import Game, Board, Settings
 
 
 def test_move_analysis_toggle():
     """Test that move analysis toggle works and persists across new games"""
+    pg = pytest.importorskip("pygame")
     print("Testing move analysis toggle functionality...")
 
     # Create a game instance
