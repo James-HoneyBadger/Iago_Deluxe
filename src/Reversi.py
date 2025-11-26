@@ -4923,151 +4923,25 @@ Comment=Classic Reversi/Othello board game with AI
 # ----------------------------- Entrypoint --------------------------------- #
 
 
-def parse_arguments():
-    """Parse command-line arguments with argparse"""
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Reversi Deluxe - A feature-rich Reversi/Othello game",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s                      # Start with default settings
-  %(prog)s -s 10                # Play on 10x10 board
-  %(prog)s -d 5 -t midnight     # Hard AI with dark theme
-  %(prog)s --load game.rsv      # Load saved game
-  %(prog)s --no-sound --debug   # Silent mode with debug logging
-        """,
-    )
-
-    parser.add_argument(
-        "-s",
-        "--size",
-        type=int,
-        metavar="N",
-        help="Board size (4-16, even numbers). Default: 8",
-    )
-
-    parser.add_argument(
-        "-d",
-        "--difficulty",
-        type=int,
-        choices=range(1, 7),
-        metavar="LEVEL",
-        help="AI difficulty level (1-6). 1=Beginner, 6=Master. Default: 4",
-    )
-
-    parser.add_argument(
-        "-t",
-        "--theme",
-        choices=["classic", "ocean", "sunset", "midnight", "forest"],
-        help="Color theme. Default: classic",
-    )
-
-    parser.add_argument("--no-sound", action="store_true", help="Disable sound effects")
-
-    parser.add_argument(
-        "--load", type=str, metavar="FILE", help="Load saved game from file"
-    )
-
-    parser.add_argument(
-        "--ai-black", action="store_true", help="Enable AI for black player"
-    )
-
-    parser.add_argument(
-        "--ai-white", action="store_true", help="Enable AI for white player"
-    )
-
-    parser.add_argument("--debug", action="store_true", help="Enable debug logging")
-
-    parser.add_argument("--version", action="version", version="Reversi Deluxe v2.0")
-
-    return parser.parse_args()
-
-
 def main(argv: List[str] = None):
-    """Main entry point with enhanced argument parsing and error handling"""
-    # Parse arguments
-    args = parse_arguments()
-
+    """Main entry point - GUI only interface"""
     # Setup logging if available
     try:
         from src.logger import GameLogger
 
-        GameLogger.setup_logging(debug=args.debug)
+        GameLogger.setup_logging(debug=False)
         logger = GameLogger.get_logger(__name__)
         logger.info("Starting Reversi Deluxe v2.0")
     except ImportError:
         logger = None
-        if args.debug:
-            print("Logging module not available")
 
     try:
         # Load settings
         settings = Settings.load()
 
-        # Override settings with command-line arguments
-        if args.size is not None:
-            if args.size < 4 or args.size > 16 or args.size % 2 != 0:
-                print(
-                    "Error: Board size must be even number between 4 and 16",
-                    file=sys.stderr,
-                )
-                return 2
-            settings.board_size = args.size
-            if logger:
-                logger.info(f"Board size set to {args.size}")
-
-        if args.difficulty is not None:
-            settings.ai_depth = args.difficulty
-            if logger:
-                logger.info(f"AI difficulty set to {args.difficulty}")
-
-        if args.theme is not None:
-            settings.theme = args.theme
-            if logger:
-                logger.info(f"Theme set to {args.theme}")
-
-        if args.no_sound:
-            settings.sound = False
-            if logger:
-                logger.info("Sound disabled")
-
-        if args.ai_black:
-            settings.ai_black = True
-            if logger:
-                logger.info("AI enabled for black")
-
-        if args.ai_white:
-            settings.ai_white = True
-            if logger:
-                logger.info("AI enabled for white")
-
-        # Create board
+        # Create board with default size
         size = settings.board_size
         board = Board(size=size)
-
-        # Load saved game if specified
-        if args.load:
-            try:
-                import json
-
-                with open(args.load, "r") as f:
-                    data = json.load(f)
-                board = Board.deserialize(data)
-                if logger:
-                    logger.info(f"Loaded game from {args.load}")
-                print(f"Loaded game from {args.load}")
-            except FileNotFoundError:
-                print(f"Error: Save file not found: {args.load}", file=sys.stderr)
-                if logger:
-                    logger.error(f"Save file not found: {args.load}")
-                return 1
-            except (json.JSONDecodeError, KeyError, ValueError) as e:
-                print(f"Error: Invalid save file: {e}", file=sys.stderr)
-                if logger:
-                    logger.error(f"Invalid save file: {e}")
-                return 1
 
         # Run game
         if logger:

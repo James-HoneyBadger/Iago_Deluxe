@@ -814,37 +814,9 @@ $ ./play.sh --help
 
 Iago_Deluxe - Classic Reversi/Othello Game
 
-Usage: play.sh [OPTIONS]
+Usage: ./play.sh
 
-Board Options:
-  -s, --size SIZE         Board size: 4, 6, 8, 10, 12, 14, or 16 (default: 8)
-                          Example: -s 10 for a 10×10 board
-
-AI Options:
-  -d, --difficulty LEVEL  AI difficulty level 1-6 (default: 4)
-                          1-2: Beginner  |  3-4: Intermediate  |  5-6: Expert
-  --ai-black              Enable AI to play as black
-  --ai-white              Enable AI to play as white (default: enabled)
-
-Visual Options:
-  -t, --theme THEME       Color theme (default: classic)
-                          Available: classic, ocean, sunset, midnight, forest
-  --no-hints              Disable move hint indicators
-  --no-move-preview       Disable move preview overlay
-
-Audio Options:
-  --no-sound              Disable sound effects
-
-Debug Options:
-  --debug                 Enable debug logging to reversi.log
-  --version               Show version information and exit
-  -h, --help              Show this help message and exit
-
-Examples:
-  ./play.sh                           # Start with default settings
-  ./play.sh -s 10 -d 5                # 10×10 board, hard AI
-  ./play.sh -t ocean --no-sound       # Ocean theme, no sound
-  ./play.sh --ai-black --ai-white     # Watch AI play itself
+This game uses a GUI interface only. All settings are configured through the in-game menus.
 
 For more help, see docs/QUICK_REFERENCE.md
 ```

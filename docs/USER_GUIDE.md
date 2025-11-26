@@ -583,10 +583,10 @@ python3 --version  # Should be 3.7+
    .venv/bin/pip install --upgrade pygame
    ```
 
-4. Run without sound:
-   ```bash
-   ./play.sh --no-sound
-   ```
+4. Disable sound in settings:
+   - Open the game
+   - Go to Settings menu
+   - Uncheck "Sound Effects"
 
 ### Save Files Not Loading
 
@@ -741,11 +741,7 @@ Custom themes can be added to `src/config.py`.
 A: Yes, the game window is resizable. Board scales automatically. Minimum size: 600×480.
 
 **Q: How do I enable debug logging?**  
-A: Launch with debug flag:
-```bash
-./play.sh --debug
-```
-Creates detailed log in `reversi.log`.
+A: Debug logging is for developers only and not available in the GUI.
 
 **Q: Where are save files stored?**  
 A: `data/` directory in installation folder:

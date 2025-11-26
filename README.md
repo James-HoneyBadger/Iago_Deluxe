@@ -62,33 +62,6 @@ A feature-rich, professionally-crafted implementation of the classic Reversi (Ot
 python3 main.py
 ```
 
-### Command-Line Options
-
-The game supports extensive command-line configuration:
-
-```bash
-# Display help
-./play.sh --help
-
-# Custom board size (4, 6, 8, 10, 12, 14, or 16)
-./play.sh -s 10
-
-# Set AI difficulty (1-6) and theme
-./play.sh -d 5 -t midnight
-
-# Disable sound effects
-./play.sh --no-sound
-
-# Disable hints
-./play.sh --no-hints
-
-# Enable debug logging
-./play.sh --debug
-
-# Combination example: 10x10 board, hard AI, ocean theme
-./play.sh -s 10 -d 5 -t ocean
-```
-
 ## 📁 Project Structure
 
 ```

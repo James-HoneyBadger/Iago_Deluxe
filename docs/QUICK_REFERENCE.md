@@ -34,34 +34,6 @@ reversi.log                  # Game logs (auto-rotated at 10MB)
 .venv/bin/python3 main.py
 ```
 
-### Command-Line Options
-```bash
-# Board size (4, 6, 8, 10, 12, 14, or 16)
-./play.sh -s 10
-./play.sh --size 12
-
-# AI difficulty (1-6)
-./play.sh -d 5
-./play.sh --difficulty 3
-
-# Theme selection
-./play.sh -t midnight
-./play.sh --theme ocean
-# Available: classic, ocean, sunset, midnight, forest
-
-# Disable features
-./play.sh --no-sound          # Mute sound effects
-./play.sh --no-hints          # Disable move hints
-./play.sh --no-move-preview   # Disable move preview
-
-# Debug mode
-./play.sh --debug             # Enable detailed logging
-
-# Combination examples
-./play.sh -s 10 -d 5 -t ocean --no-sound
-./play.sh --size 12 --difficulty 6 --theme midnight
-```
-
 ## ⌨️ Keyboard Shortcuts
 
 ### Game Control

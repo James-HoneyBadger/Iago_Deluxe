@@ -3,12 +3,7 @@
 Reversi Deluxe - Main Entry Point
 
 A polished, feature-rich implementation of the classic Reversi/Othello
-board game.
-
-Usage:
-    python3 main.py [board_size]
-    python3 main.py 8       # Standard 8x8 board
-    python3 main.py 10      # 10x10 board
+board game with GUI interface.
 
 For more information, see docs/README.md
 """
