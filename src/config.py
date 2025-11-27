@@ -29,7 +29,7 @@ class GameConfig:
     AI_VS_AI_DELAY_MS: int = 500  # Faster for AI vs AI
 
     # Game state
-    SAVE_FILE_VERSION: str = "2.0"
+    SAVE_FILE_VERSION: str = "2.1"
 
 
 @dataclass

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2025-11-27
+
 ### Added
 - **New Piece Styles**: Added 3 new visual styles for game pieces
   - Minimal: Clean, simple solid colors with thin borders
@@ -18,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **UI Consistency**: All dialogs and screens now close with ESC key only
 - **Analysis Access**: Post-game analysis moved from automatic popup to menu option
+- **Project Cleanup**: Removed all Windows 2000 version references and documentation
 
 ## [2.0.0] - 2025-11-26
 

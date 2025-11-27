@@ -40,7 +40,7 @@ Board Size Options: 4x4, 6x6, 8x8, 10x10, 12x12, 14x14, 16x16
 Change board size in-game via Game menu → Board Size option
 
 Author: Enhanced and refactored for maintainability
-Version: 2.0 - Refactored Edition
+Version: 2.1.0 - Refactored Edition
 """
 # pylint: disable=invalid-name,too-many-lines
 # pylint: disable=missing-function-docstring,missing-class-docstring

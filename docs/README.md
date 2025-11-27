@@ -217,6 +217,6 @@ This project is licensed under the terms in the [LICENSE](../LICENSE) file.
 
 ---
 
-**Version:** 2.0.0  
-**Last Updated:** November 19, 2025  
+**Version:** 2.1.0  
+**Last Updated:** November 27, 2025  
 **Repository:** [https://github.com/James-HoneyBadger/Iago_Deluxe](https://github.com/James-HoneyBadger/Iago_Deluxe)

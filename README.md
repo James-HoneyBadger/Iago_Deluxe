@@ -223,5 +223,5 @@ This project is licensed under the terms in the [LICENSE](LICENSE) file.
 
 ---
 
-**Version:** 2.0 - Refactored Edition  
-**Last Updated:** November 19, 2025
+**Version:** 2.1.0 - Refactored Edition  
+**Last Updated:** November 27, 2025
