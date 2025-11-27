@@ -55,6 +55,8 @@ from typing import Callable, List, Optional, Tuple, Dict
 
 import pygame as pg
 
+# pylint: disable=no-member
+
 # ----------------------------- Core game state ----------------------------- #
 EMPTY, BLACK, WHITE = 0, 1, 2
 OPP = {BLACK: WHITE, WHITE: BLACK}
@@ -63,7 +65,10 @@ DIRS = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
 
 
 @dataclass
+@dataclass
 class Move:
+    """Represents a move on the Othello board."""
+
     row: int
     col: int
     flips: List[Tuple[int, int]]
@@ -71,6 +76,8 @@ class Move:
 
 @dataclass
 class Board:
+    """Represents the Othello game board state."""
+
     size: int = 8
     grid: List[List[int]] = field(default_factory=list)
     to_move: int = BLACK
@@ -90,9 +97,11 @@ class Board:
             self.grid[m][m - 1] = BLACK
 
     def copy_grid(self):
+        """Return a deep copy of the grid."""
         return [row[:] for row in self.grid]
 
     def inside(self, r, c):
+        """Check if coordinates are within board bounds."""
         return 0 <= r < self.size and 0 <= c < self.size
 
     def legal_moves(self, color: Optional[int] = None) -> List[Move]:
@@ -437,6 +446,7 @@ class AI:
         return self.rng.choice(best_moves) if best_moves else moves[0]
 
     def quick_move_eval(self, board: Board, move: Move, color: int) -> int:
+        # pylint: disable=unused-argument
         """Quick heuristic evaluation for move ordering"""
         pst = self.get_pst(board.size)
         r, c = move.row, move.col
@@ -538,9 +548,11 @@ ICON_PNG = "assets/reversi-icon.png"
 
 @dataclass
 class Settings:
+    """Game settings and configuration."""
+
     theme: str = "classic"  # classic / midnight
     sound: bool = True
-    hints: bool = True
+    hints: bool = False  # Disabled by default to avoid visual clutter
     ai_black: bool = False
     ai_white: bool = True
     ai_depth: int = 4
@@ -552,7 +564,7 @@ class Settings:
     font_size_multiplier: float = 1.0  # 0.8 to 1.5
     zoom_level: float = 1.0  # 0.5 to 2.0
     board_rotation: int = 0  # 0, 90, 180, 270 degrees
-    show_move_preview: bool = True
+    show_move_preview: bool = False  # Disabled by default to avoid visual clutter
     show_hint_intensity: bool = True
     per_difficulty_stats: Optional[Dict[int, PlayerStats]] = None
 
@@ -634,6 +646,8 @@ class Settings:
 
 
 class SFX:
+    """Sound effects manager for the game."""
+
     def __init__(self, enabled=True):
         self.enabled = enabled
         try:
@@ -707,62 +721,98 @@ THEMES = {
     "classic": {
         "name": "classic",
         "display": "Classic Green",
-        "felt": (32, 108, 62),
-        "grid": (10, 70, 38),
-        "hud": (252, 252, 254),
-        "text": (40, 40, 45),
+        "felt": (34, 139, 34),  # Forest green
+        "grid": (20, 100, 20),
+        "hud": (255, 255, 255),
+        "text": (20, 20, 20),
         "accent": (70, 130, 235),
-        "danger": (235, 70, 70),
+        "danger": (220, 53, 69),
+        "board_base": (50, 150, 50),  # Green board
+        "board_border": (30, 100, 30),
+        "piece_black": (25, 25, 25),
+        "piece_white": (245, 245, 245),
+        "piece_pattern_black": (60, 60, 60),
+        "piece_pattern_white": (200, 200, 200),
     },
     "ocean": {
         "name": "ocean",
         "display": "Ocean Blue",
-        "felt": (25, 78, 132),
-        "grid": (15, 50, 85),
-        "hud": (240, 248, 255),
-        "text": (30, 50, 80),
-        "accent": (50, 150, 255),
-        "danger": (255, 100, 100),
+        "felt": (70, 130, 180),  # Steel blue
+        "grid": (40, 90, 140),
+        "hud": (255, 255, 255),
+        "text": (20, 20, 20),
+        "accent": (30, 144, 255),  # Dodger blue
+        "danger": (255, 99, 71),  # Tomato
+        "board_base": (100, 150, 200),  # Blue board
+        "board_border": (60, 100, 150),
+        "piece_black": (30, 30, 30),
+        "piece_white": (250, 250, 250),
+        "piece_pattern_black": (80, 80, 80),
+        "piece_pattern_white": (180, 180, 180),
     },
     "sunset": {
         "name": "sunset",
         "display": "Sunset Orange",
-        "felt": (156, 78, 25),
-        "grid": (120, 50, 15),
-        "hud": (255, 248, 240),
-        "text": (80, 40, 20),
-        "accent": (255, 120, 50),
-        "danger": (220, 70, 70),
+        "felt": (255, 140, 0),  # Dark orange
+        "grid": (200, 100, 0),
+        "hud": (255, 255, 255),
+        "text": (20, 20, 20),
+        "accent": (255, 69, 0),  # Red orange
+        "danger": (220, 20, 60),  # Crimson
+        "board_base": (255, 180, 100),  # Orange board
+        "board_border": (200, 120, 50),
+        "piece_black": (20, 20, 20),
+        "piece_white": (255, 255, 240),
+        "piece_pattern_black": (70, 70, 70),
+        "piece_pattern_white": (220, 220, 200),
     },
     "midnight": {
         "name": "midnight",
-        "display": "Midnight Dark",
-        "felt": (25, 35, 50),
-        "grid": (15, 25, 40),
-        "hud": (35, 35, 40),
-        "text": (220, 220, 230),
-        "accent": (120, 180, 255),
-        "danger": (255, 120, 120),
+        "display": "Midnight Purple",
+        "felt": (75, 0, 130),  # Indigo
+        "grid": (50, 0, 90),
+        "hud": (255, 255, 255),
+        "text": (20, 20, 20),
+        "accent": (138, 43, 226),  # Blue violet
+        "danger": (255, 0, 255),  # Magenta
+        "board_base": (150, 100, 200),  # Purple board
+        "board_border": (100, 50, 150),
+        "piece_black": (15, 15, 15),
+        "piece_white": (250, 250, 250),
+        "piece_pattern_black": (50, 50, 50),
+        "piece_pattern_white": (200, 200, 200),
     },
     "forest": {
         "name": "forest",
         "display": "Forest Green",
-        "felt": (45, 85, 35),
-        "grid": (25, 55, 20),
-        "hud": (248, 252, 248),
-        "text": (30, 60, 25),
-        "accent": (80, 160, 70),
-        "danger": (200, 80, 80),
+        "felt": (34, 139, 34),  # Forest green
+        "grid": (20, 100, 20),
+        "hud": (255, 255, 255),
+        "text": (20, 20, 20),
+        "accent": (50, 205, 50),  # Lime green
+        "danger": (255, 69, 0),  # Red orange
+        "board_base": (60, 120, 60),  # Dark green board
+        "board_border": (30, 80, 30),
+        "piece_black": (25, 25, 25),
+        "piece_white": (245, 245, 245),
+        "piece_pattern_black": (60, 60, 60),
+        "piece_pattern_white": (190, 190, 190),
     },
     "colorblind_friendly": {
         "name": "colorblind_friendly",
-        "display": "Colorblind (Blue/Orange)",
-        "felt": (65, 90, 120),
-        "grid": (40, 60, 85),
-        "hud": (245, 245, 250),
-        "text": (30, 30, 40),
-        "accent": (230, 140, 30),  # Orange
-        "danger": (200, 60, 60),
+        "display": "Accessible Blue/Orange",
+        "felt": (70, 130, 180),  # Steel blue
+        "grid": (40, 90, 140),
+        "hud": (255, 255, 255),
+        "text": (20, 20, 20),
+        "accent": (255, 140, 0),  # Dark orange
+        "danger": (220, 20, 60),  # Crimson
+        "board_base": (200, 220, 240),  # Light blue board
+        "board_border": (120, 160, 200),
+        "piece_black": (30, 30, 30),
+        "piece_white": (250, 250, 250),
+        "piece_pattern_black": (80, 80, 80),
+        "piece_pattern_white": (180, 180, 180),
     },
     "high_contrast": {
         "name": "high_contrast",
@@ -771,8 +821,14 @@ THEMES = {
         "grid": (255, 255, 255),
         "hud": (255, 255, 255),
         "text": (0, 0, 0),
-        "accent": (0, 120, 255),
-        "danger": (255, 0, 0),
+        "accent": (0, 123, 255),
+        "danger": (220, 53, 69),
+        "board_base": (220, 220, 220),  # Gainsboro
+        "board_border": (0, 0, 0),
+        "piece_black": (0, 0, 0),
+        "piece_white": (255, 255, 255),
+        "piece_pattern_black": (64, 64, 64),
+        "piece_pattern_white": (192, 192, 192),
     },
 }
 WOOD = (70, 45, 30)
@@ -792,6 +848,8 @@ WHITE_DISC_RIM = (180, 180, 180)
 # ----------------------------- UI & Game ---------------------------------- #
 @dataclass
 class Particle:
+    """Represents a visual particle effect."""
+
     x: float
     y: float
     vx: float
@@ -803,6 +861,8 @@ class Particle:
 
 @dataclass
 class MenuItem:
+    """Represents a menu item with text, handler, and optional submenu."""
+
     label: str
     handler: Callable[[], None]
     enabled: bool = True
@@ -811,6 +871,8 @@ class MenuItem:
 
 @dataclass
 class Menu:
+    """Represents a game menu with title and items."""
+
     title: str
     items: List[MenuItem]
     rect: pg.Rect = field(default_factory=lambda: pg.Rect(0, 0, 0, 0))
@@ -819,6 +881,8 @@ class Menu:
 
 @dataclass
 class FlipAnimation:
+    """Represents an animation of a disc flipping from one color to another."""
+
     row: int
     col: int
     start_time: float
@@ -829,6 +893,8 @@ class FlipAnimation:
 
 @dataclass
 class MoveHistoryEntry:
+    """Represents an entry in the move history."""
+
     move_number: int
     player: int  # BLACK or WHITE
     row: int
@@ -839,6 +905,8 @@ class MoveHistoryEntry:
 
 @dataclass
 class MoveAnalysis:
+    """Analysis data for a move including strategic metrics."""
+
     move_number: int
     player: int
     row: int
@@ -853,6 +921,8 @@ class MoveAnalysis:
 
 
 class MoveAnalysisDisplay:
+    """Handles display of move analysis information."""
+
     def __init__(self, game):
         self.game = game
         self.active = False
@@ -883,7 +953,7 @@ class MoveAnalysisDisplay:
         analysis = self.current_analysis
 
         # Get board layout to position window to the right
-        board_rect, hud_rect, cell = self.game.layout()
+        board_rect, hud_rect, _ = self.game.layout()
 
         # Window dimensions and position (to the right of the board)
         window_width = 350
@@ -988,7 +1058,7 @@ class MoveAnalysisDisplay:
 
         # Use same positioning logic as draw method
         screen = pg.display.get_surface()
-        board_rect, hud_rect, cell = self.game.layout()
+        board_rect, hud_rect, _ = self.game.layout()
 
         # Window dimensions and position (to the right of the board)
         window_width = 350
@@ -1263,7 +1333,7 @@ class GameplayAnalyzer:
         r: int,
         c: int,
         pieces_captured: int,
-        corners: int,
+        corners: int,  # pylint: disable=unused-argument
         mobility: int,
         board_size: int,
     ) -> str:
@@ -1883,7 +1953,7 @@ class MenuSystem:
         mouse_pos = pg.mouse.get_pos()
         y = submenu_rect.y + MENU_PADDING
 
-        for i, item in enumerate(self.active_submenu_items):
+        for _, item in enumerate(self.active_submenu_items):
             item_rect = pg.Rect(
                 submenu_rect.x + 5,
                 y,
@@ -1935,7 +2005,7 @@ class SelectionDialog:
 
         # Find current selection
         self.selected_index = 0
-        for i, (label, value) in enumerate(options):
+        for i, (_, value) in enumerate(options):
             if value == current_value:
                 self.selected_index = i
                 break
@@ -1964,7 +2034,7 @@ class SelectionDialog:
 
         # Check option clicks
         y = dialog_y + 60
-        for i, (label, value) in enumerate(self.options):
+        for i, (_, value) in enumerate(self.options):
             option_rect = pg.Rect(dialog_x + 20, y, dialog_w - 40, 35)
             if option_rect.collidepoint(pos):
                 self.selected_index = i
@@ -2040,7 +2110,7 @@ class SelectionDialog:
         mouse_pos = pg.mouse.get_pos()
         y = dialog_y + 60
 
-        for i, (label, value) in enumerate(self.options):
+        for i, (label, _) in enumerate(self.options):
             option_rect = pg.Rect(dialog_x + 20, y, dialog_w - 40, 35)
 
             # Highlight selected or hovered option
@@ -2531,7 +2601,7 @@ class ReplayMode:
         self.game.board = Board(self.game.board.size)
 
         # Replay moves up to the index
-        for i, entry in enumerate(self.game.ui.move_history[:move_index]):
+        for _, entry in enumerate(self.game.ui.move_history[:move_index]):
             legal = {
                 (m.row, m.col): m
                 for m in self.game.board.legal_moves(self.game.board.to_move)
@@ -2665,7 +2735,7 @@ class ReplayMode:
 
         mouse_pos = pg.mouse.get_pos()
 
-        for i, (icon, handler, tooltip) in enumerate(buttons):
+        for i, (icon, _, _) in enumerate(buttons):
             btn_x = start_x + i * (button_width + button_spacing)
             btn_rect = pg.Rect(btn_x, controls_y, button_width, button_height)
 
@@ -2965,11 +3035,11 @@ class GameExporter:
             content = GameExporter.export_to_json(game)
 
         try:
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(content)
             game.ui.status = f"Game exported to {filename}"
             return filename
-        except Exception as e:
+        except OSError as e:
             game.ui.status = f"Export failed: {e}"
             return None
 
@@ -3001,6 +3071,7 @@ class Game:
         self.ensure_icon()
         self.wood_cache = None
         self.disc_cache = {}  # Cache for pre-rendered discs
+        self.board_wood_cache = {}  # Cache for board wood textures
         self.was_game_over = False  # Track game state for auto-analysis
 
     # ---------------------- Assets & helpers ---------------------- #
@@ -3025,7 +3096,7 @@ class Game:
         except ImportError:
             # Fallback: create a simple icon using pygame
             self._create_pygame_icon()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Warning: Could not create icon: {e}")
 
     def _create_pygame_icon(self):
@@ -3037,7 +3108,7 @@ class Game:
             pg.draw.circle(surf, (240, 240, 240), (32, 32), 20)
             pg.draw.circle(surf, (30, 30, 30), (32, 32), 15)
             pg.image.save(surf, ICON_PNG)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Warning: Could not create fallback icon: {e}")
 
     def layout(self):
@@ -3060,6 +3131,7 @@ class Game:
     def clear_disc_cache(self):
         """Clear the disc cache - useful when window is resized"""
         self.disc_cache.clear()
+        self.board_wood_cache.clear()  # Also clear board wood cache
 
     # ---------------------- Drawing ------------------------------- #
     def draw(self):
@@ -3070,12 +3142,12 @@ class Game:
         self.draw_wood_bg()
         self.draw_hud(hud_rect, theme)
         self.draw_board(board_rect, cell, theme)
-        self.draw_game_pieces(board_rect, cell)
+        self.draw_game_pieces(board_rect, cell, theme)
         self.draw_ui_overlays(board_rect, cell, theme)
 
         # Draw tutorial panel if active
         if self.ui.show_tutorial and self.ui.tutorial.active:
-            w, h = self.screen.get_size()
+            w, _ = self.screen.get_size()
             tutorial_rect = pg.Rect(w - 300, HUD_HEIGHT + 10, 290, 200)
             self.draw_tutorial(tutorial_rect, theme)
 
@@ -3085,7 +3157,11 @@ class Game:
             analytics_rect = pg.Rect(w - 300, HUD_HEIGHT + 220, 290, 250)
             self.draw_analytics(analytics_rect, theme)
 
-        self.update_particles()
+        # Update particles
+        # DISABLED: Particles cause visual distraction
+        # self.update_particles()
+        # Clear any existing particles
+        self.ui.particles.clear()
 
         # Draw game analysis overlay
         self.game_analysis.draw(self.screen, theme)
@@ -3094,8 +3170,9 @@ class Game:
         self.move_analysis.draw(self.screen, theme)
 
         # Draw AI thinking indicator
-        if self.ui.ai_thinking:
-            self.draw_ai_thinking_indicator(theme)
+        # DISABLED: AI thinking indicator causes visual distraction
+        # if self.ui.ai_thinking:
+        #     self.draw_ai_thinking_indicator(theme)
 
         # Draw replay mode timeline
         if self.ui.replay_mode:
@@ -3194,7 +3271,7 @@ class Game:
             auto_y = status_y + 2
             self.screen.blit(auto_text, (auto_x, auto_y))
 
-    def draw_game_pieces(self, board_rect, cell):
+    def draw_game_pieces(self, board_rect, cell, theme):
         """Draw all game pieces on the board with animations"""
         current_time = time.time()
 
@@ -3216,13 +3293,13 @@ class Game:
                                 1.0, (current_time - anim.start_time) / anim.duration
                             )
                             self.draw_flipping_disc(
-                                rect, anim.from_color, anim.to_color, progress
+                                rect, anim.from_color, anim.to_color, progress, theme
                             )
                             animating = True
                             break
 
                     if not animating:
-                        self.draw_disc(rect, self.board.grid[r][c])
+                        self.draw_disc(rect, self.board.grid[r][c], theme)
 
         # Clean up finished animations
         self.ui.flip_animations = [
@@ -3266,11 +3343,12 @@ class Game:
                         pg.draw.rect(self.screen, (255, 255, 100, 40), inner_rect)
 
         # Hover effect and move preview
-        if hover and hover in legal:
-            self.draw_hover_effect(board_rect, cell, hover)
-            # Show piece preview
-            if self.settings.show_move_preview and not self.ui.replay_mode:
-                self.draw_move_preview(board_rect, cell, hover)
+        # DISABLED: All hover effects cause visual distraction
+        # if hover and hover in legal:
+        #     self.draw_hover_effect(board_rect, cell, hover)
+        #     # Show piece preview
+        #     if self.settings.show_move_preview and not self.ui.replay_mode:
+        #         self.draw_move_preview(board_rect, cell, hover)
 
     def draw_hints(self, board_rect, cell, legal_moves):
         """Draw elegant hint indicators for legal moves"""
@@ -3296,26 +3374,19 @@ class Game:
             )
 
     def draw_hover_effect(self, board_rect, cell, hover_pos):
-        """Draw minimal hover effect - just small corner dots"""
+        """Draw minimal hover effect - subtle highlight"""
         r, c = hover_pos
         rect = pg.Rect(
             board_rect.left + c * cell, board_rect.top + r * cell, cell, cell
         )
 
-        # Tiny corner indicators - much more subtle
-        dot_size = 2
-        margin = cell // 6
-
-        # Four small corner dots
-        corners = [
-            (rect.left + margin, rect.top + margin),  # Top-left
-            (rect.right - margin, rect.top + margin),  # Top-right
-            (rect.left + margin, rect.bottom - margin),  # Bottom-left
-            (rect.right - margin, rect.bottom - margin),  # Bottom-right
-        ]
-
-        for x, y in corners:
-            pg.draw.circle(self.screen, (220, 220, 220), (x, y), dot_size)
+        # Subtle highlight overlay
+        highlight_color = (255, 255, 255, 30)  # Very subtle white overlay
+        highlight_surf = pg.Surface((rect.width, rect.height), pg.SRCALPHA)
+        pg.draw.rect(
+            highlight_surf, highlight_color, highlight_surf.get_rect(), border_radius=8
+        )
+        self.screen.blit(highlight_surf, rect.topleft)
 
     def draw_move_preview(self, board_rect, cell, hover_pos):
         """Draw semi-transparent piece preview at hover position"""
@@ -3435,7 +3506,7 @@ class Game:
             )
         self.screen.blit(s, rect.topleft)
 
-    def _create_textured_disc(self, radius, color):
+    def _create_textured_disc(self, radius, color, theme):
         """Create a textured checker piece with the specified radius and color"""
         size = radius * 2 + 6  # Extra space for shadow
         surf = pg.Surface((size, size), pg.SRCALPHA)
@@ -3492,7 +3563,7 @@ class Game:
         else:  # traditional
             if color == BLACK:
                 # Realistic black checker piece with detailed patterns
-                base_color = (15, 15, 15)  # Very dark for depth
+                base_color = theme["piece_black"]  # Use theme color
 
                 # Main disc body with slight gradient
                 for i in range(radius, 0, -1):
@@ -3500,18 +3571,16 @@ class Game:
                     grad_color = (
                         int(base_color[0] + gradient_factor * 10),
                         int(base_color[1] + gradient_factor * 10),
-                        int(base_color[2] + gradient_factor * 10)
+                        int(base_color[2] + gradient_factor * 10),
                     )
                     pg.draw.circle(surf, grad_color, (center_x, center_y), i)
 
                 # Detailed checker patterns - radial lines with varying thickness
-                pattern_color = (80, 80, 80)
+                pattern_color = theme["piece_pattern_black"]  # Use theme color
                 num_lines = 24  # More lines for detail
 
                 for i in range(num_lines):
                     angle = (2 * math.pi * i) / num_lines
-                    # Vary line thickness slightly
-                    thickness = 1 if i % 3 != 0 else 2
 
                     # Draw radial lines from center outward with slight curve
                     for dist in range(int(radius * 0.15), int(radius * 0.9), 2):
@@ -3519,8 +3588,8 @@ class Game:
                         y = center_y + math.sin(angle) * dist
                         # Add slight waviness
                         wave = math.sin(dist * 0.1) * 1.5
-                        wx = x + math.cos(angle + math.pi/2) * wave
-                        wy = y + math.sin(angle + math.pi/2) * wave
+                        wx = x + math.cos(angle + math.pi / 2) * wave
+                        wy = y + math.sin(angle + math.pi / 2) * wave
                         if 0 <= wx < size and 0 <= wy < size:
                             surf.set_at((int(wx), int(wy)), pattern_color)
 
@@ -3532,16 +3601,19 @@ class Game:
                         ring_color = (
                             min(255, pattern_color[0] + r_offset * 20),
                             min(255, pattern_color[1] + r_offset * 20),
-                            min(255, pattern_color[2] + r_offset * 20)
+                            min(255, pattern_color[2] + r_offset * 20),
                         )
                         pg.draw.circle(
-                            surf, ring_color, (center_x, center_y),
-                            int(ring_radius + r_offset), 1
+                            surf,
+                            ring_color,
+                            (center_x, center_y),
+                            int(ring_radius + r_offset),
+                            1,
                         )
 
             else:  # WHITE
                 # Realistic white checker piece with detailed patterns
-                base_color = (250, 250, 250)  # Bright white
+                base_color = theme["piece_white"]  # Use theme color
 
                 # Main disc body with slight gradient
                 for i in range(radius, 0, -1):
@@ -3549,25 +3621,24 @@ class Game:
                     grad_color = (
                         int(base_color[0] - gradient_factor * 15),
                         int(base_color[1] - gradient_factor * 15),
-                        int(base_color[2] - gradient_factor * 15)
+                        int(base_color[2] - gradient_factor * 15),
                     )
                     pg.draw.circle(surf, grad_color, (center_x, center_y), i)
 
                 # Detailed checker patterns - radial lines
-                pattern_color = (180, 180, 180)
+                pattern_color = theme["piece_pattern_white"]  # Use theme color
                 num_lines = 24
 
                 for i in range(num_lines):
                     angle = (2 * math.pi * i) / num_lines
-                    thickness = 1 if i % 3 != 0 else 2
 
                     # Draw radial lines with slight curve
                     for dist in range(int(radius * 0.15), int(radius * 0.9), 2):
                         x = center_x + math.cos(angle) * dist
                         y = center_y + math.sin(angle) * dist
                         wave = math.sin(dist * 0.1) * 1.5
-                        wx = x + math.cos(angle + math.pi/2) * wave
-                        wy = y + math.sin(angle + math.pi/2) * wave
+                        wx = x + math.cos(angle + math.pi / 2) * wave
+                        wy = y + math.sin(angle + math.pi / 2) * wave
                         if 0 <= wx < size and 0 <= wy < size:
                             surf.set_at((int(wx), int(wy)), pattern_color)
 
@@ -3578,11 +3649,14 @@ class Game:
                         ring_color = (
                             max(0, pattern_color[0] + r_offset * 15),
                             max(0, pattern_color[1] + r_offset * 15),
-                            max(0, pattern_color[2] + r_offset * 15)
+                            max(0, pattern_color[2] + r_offset * 15),
                         )
                         pg.draw.circle(
-                            surf, ring_color, (center_x, center_y),
-                            int(ring_radius + r_offset), 1
+                            surf,
+                            ring_color,
+                            (center_x, center_y),
+                            int(ring_radius + r_offset),
+                            1,
                         )
 
             # Enhanced rim for definition with beveled edge
@@ -3627,14 +3701,20 @@ class Game:
 
     def draw_board(self, board_rect, cell, theme):
         """Draw the realistic wooden game board with proper grain and depth"""
-        # Create wood grain texture
-        wood_surf = self._create_wood_texture(board_rect.size)
+        # Create wood grain texture using theme colors (cached)
+        cache_key = (board_rect.size, theme["name"])
+        if cache_key not in self.board_wood_cache:
+            self.board_wood_cache[cache_key] = self._create_wood_texture(
+                board_rect.size, theme
+            )
+
+        wood_surf = self.board_wood_cache[cache_key]
 
         # Apply the wood texture to the board
         self.screen.blit(wood_surf, board_rect.topleft)
 
-        # Add subtle border for definition
-        border_color = (40, 20, 0)  # Dark wood border
+        # Add subtle border for definition using theme color
+        border_color = theme["board_border"]
         pg.draw.rect(
             self.screen, border_color, board_rect, 3, border_radius=BORDER_RADIUS
         )
@@ -3644,7 +3724,10 @@ class Game:
         shadow_rect = board_rect.inflate(-6, -6)
         shadow_surf = pg.Surface(shadow_rect.size, pg.SRCALPHA)
         pg.draw.rect(
-            shadow_surf, shadow_color, shadow_surf.get_rect(), border_radius=BORDER_RADIUS - 3
+            shadow_surf,
+            shadow_color,
+            shadow_surf.get_rect(),
+            border_radius=BORDER_RADIUS - 3,
         )
         self.screen.blit(shadow_surf, shadow_rect.topleft)
 
@@ -3672,64 +3755,23 @@ class Game:
                     line_width,
                 )
 
-    def _create_wood_texture(self, size):
-        """Create a realistic wood grain texture for the board"""
+    def _create_wood_texture(self, size, theme):
+        """Create a simple solid board texture"""
         width, height = size
         surf = pg.Surface((width, height))
 
-        # Base wood color - rich brown
-        base_color = (139, 69, 19)  # Saddle brown
-
-        # Fill with base color
-        surf.fill(base_color)
-
-        # Add wood grain patterns
-        for y in range(0, height, 4):
-            # Create horizontal grain lines with slight color variation
-            grain_color = (
-                min(255, base_color[0] + random.randint(-20, 20)),
-                min(255, base_color[1] + random.randint(-15, 15)),
-                min(255, base_color[2] + random.randint(-10, 10))
-            )
-
-            # Draw wavy grain lines
-            for x in range(width):
-                wave_offset = int(math.sin(x * 0.02 + y * 0.1) * 2)
-                if random.random() < 0.3:  # Sparse grain lines
-                    surf.set_at((x, y + wave_offset), grain_color)
-
-        # Add some darker knots and grain variations
-        for _ in range(width * height // 1000):  # Sparse knots
-            x = random.randint(0, width - 1)
-            y = random.randint(0, height - 1)
-            knot_color = (
-                max(0, base_color[0] - random.randint(20, 40)),
-                max(0, base_color[1] - random.randint(15, 30)),
-                max(0, base_color[2] - random.randint(10, 20))
-            )
-            # Draw small knot
-            pg.draw.circle(surf, knot_color, (x, y), random.randint(2, 5))
-
-        # Add subtle vertical grain
-        for x in range(0, width, 6):
-            for y in range(height):
-                if random.random() < 0.1:
-                    grain_color = (
-                        min(255, base_color[0] + random.randint(-10, 10)),
-                        min(255, base_color[1] + random.randint(-8, 8)),
-                        min(255, base_color[2] + random.randint(-5, 5))
-                    )
-                    surf.set_at((x, y), grain_color)
+        # Simple solid color from theme
+        surf.fill(theme["board_base"])
 
         return surf
 
-    def draw_disc(self, rect, color, alpha: Optional[int] = None):
+    def draw_disc(self, rect, color, theme, alpha: Optional[int] = None):
         r = int(min(rect.width, rect.height) * DISC_SIZE_RATIO)
 
-        # Use cached disc if available (include style in cache key)
-        cache_key = (r, color, self.settings.piece_style)
+        # Use cached disc if available (include style and theme in cache key)
+        cache_key = (r, color, self.settings.piece_style, theme["name"])
         if cache_key not in self.disc_cache:
-            self.disc_cache[cache_key] = self._create_textured_disc(r, color)
+            self.disc_cache[cache_key] = self._create_textured_disc(r, color, theme)
 
         disc_surf = self.disc_cache[cache_key]
 
@@ -3744,7 +3786,7 @@ class Game:
         else:
             self.screen.blit(disc_surf, disc_rect)
 
-    def draw_flipping_disc(self, rect, from_color, to_color, progress):
+    def draw_flipping_disc(self, rect, from_color, to_color, progress, theme):
         """Draw a disc in the middle of flipping animation"""
         r = int(min(rect.width, rect.height) * DISC_SIZE_RATIO)
 
@@ -3754,10 +3796,10 @@ class Game:
             scale = 1.0 - (progress * 1.6)  # Faster shrink
             scaled_r = max(1, int(r * scale))
 
-            cache_key = (scaled_r, from_color, self.settings.piece_style)
+            cache_key = (scaled_r, from_color, self.settings.piece_style, theme["name"])
             if cache_key not in self.disc_cache:
                 self.disc_cache[cache_key] = self._create_textured_disc(
-                    scaled_r, from_color
+                    scaled_r, from_color, theme
                 )
 
             disc_surf = self.disc_cache[cache_key]
@@ -3768,10 +3810,10 @@ class Game:
             scale = (progress - 0.5) * 1.6  # Faster grow
             scaled_r = max(1, int(r * scale))
 
-            cache_key = (scaled_r, to_color, self.settings.piece_style)
+            cache_key = (scaled_r, to_color, self.settings.piece_style, theme["name"])
             if cache_key not in self.disc_cache:
                 self.disc_cache[cache_key] = self._create_textured_disc(
-                    scaled_r, to_color
+                    scaled_r, to_color, theme
                 )
 
             disc_surf = self.disc_cache[cache_key]
@@ -3779,6 +3821,18 @@ class Game:
             self.screen.blit(disc_surf, disc_rect)
 
     def draw_move_history(self, history_rect, theme):
+
+        # Panel background
+        pg.draw.rect(self.screen, theme["felt"], history_rect)
+        pg.draw.rect(self.screen, theme["grid"], history_rect, 2)
+
+        # Title
+        font = pg.font.Font(None, 24)
+        title_text = font.render("Move History", True, theme["text"])
+        title_rect = title_text.get_rect(
+            centerx=history_rect.centerx, top=history_rect.top + 10
+        )
+        self.screen.blit(title_text, title_rect)
 
         # History content area
         content_rect = pg.Rect(
@@ -4096,7 +4150,6 @@ class Game:
             self.ui.status = "Illegal move"
             self.sfx.play("bad")
             return False
-        t = pg.time.get_ticks() / 1000.0
 
         # Analyze the move before making it
         move_analysis = self.gameplay_analyzer.analyze_move(
@@ -4122,19 +4175,20 @@ class Game:
         self.ui.move_history.append(history_entry)
 
         # Create flip animations for pieces that will change color
-        for rr, cc in mv.flips:
-            from_color = self.board.grid[rr][cc]  # Current color before flip
-            to_color = self.board.to_move  # Color it will become
-            self.ui.flip_animations.append(
-                FlipAnimation(
-                    row=rr,
-                    col=cc,
-                    start_time=t,
-                    from_color=from_color,
-                    to_color=to_color,
-                )
-            )
-            self.spawn_confetti(rr, cc)
+        # DISABLED: Flip animations cause visual distraction
+        # for rr, cc in mv.flips:
+        #     from_color = self.board.grid[rr][cc]  # Current color before flip
+        #     to_color = self.board.to_move  # Color it will become
+        #     self.ui.flip_animations.append(
+        #         FlipAnimation(
+        #             row=rr,
+        #             col=cc,
+        #             start_time=t,
+        #             from_color=from_color,
+        #             to_color=to_color,
+        #         )
+        #     )
+        # self.spawn_confetti(rr, cc)  # Disabled to reduce visual clutter
 
         self.board.make_move(mv)
         self.ui.last_move = (r, c)
@@ -4257,7 +4311,7 @@ class Game:
             self.ui.status = f"AI difficulty set to level {depth}"
             self.menu_system.setup_menus()  # Refresh menu labels
             self.menu_system.active_submenu_items = None  # Close submenu
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Error setting AI depth: {e}")
             self.ui.status = "Error changing AI difficulty"
 
@@ -4306,7 +4360,7 @@ class Game:
                 self.settings.save()
                 self.ui.status = f"AI difficulty set to level {depth}"
                 self.menu_system.setup_menus()  # Refresh menu labels
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-exception-caught
                 print(f"Error setting AI depth: {e}")
                 self.ui.status = "Error changing AI difficulty"
 
@@ -4348,7 +4402,7 @@ class Game:
         """Show theme selection dialog"""
         # Define all available themes
         theme_options = [
-            (THEMES[theme_key]["display"], theme_key) for theme_key in THEMES.keys()
+            (THEMES[theme_key]["display"], theme_key) for theme_key in THEMES
         ]
 
         def set_theme(theme_key):
@@ -4572,8 +4626,6 @@ class Game:
         ]
 
         # Create a simple modal dialog
-        import pygame as pg
-
         theme = THEMES[self.settings.theme]
         screen_w, screen_h = self.screen.get_size()
 
@@ -4665,8 +4717,6 @@ class Game:
             return
 
         # Create a modal dialog showing stats for each difficulty
-        import pygame as pg
-
         theme = THEMES[self.settings.theme]
         screen_w, screen_h = self.screen.get_size()
 
@@ -5022,23 +5072,31 @@ Comment=Classic Iago/Othello board game with AI
 # ----------------------------- Entrypoint --------------------------------- #
 
 
-def main(argv: List[str] = None):
+def main(argv: List[str] = None):  # pylint: disable=unused-argument
     """Main entry point - GUI only interface"""
     # Check for display availability
-    import os
-    if not os.environ.get('DISPLAY'):
-        print("Error: No display available. This game requires a graphical environment.", file=sys.stderr)
-        print("Please run this program on a system with a graphical desktop.", file=sys.stderr)
+    if not os.environ.get("DISPLAY"):
+        print(
+            "Error: No display available. This game requires a graphical environment.",
+            file=sys.stderr,
+        )
+        print(
+            "Please run this program on a system with a graphical desktop.",
+            file=sys.stderr,
+        )
         return 1
 
     try:
-        import pygame as pg
         pg.init()
-        test_screen = pg.display.set_mode((100, 100))
+        pg.display.set_mode((100, 100))
         pg.display.quit()
         pg.quit()
-    except (pg.error, Exception) as e:
-        print("Error: Cannot initialize graphics. This game requires a graphical environment.", file=sys.stderr)
+    except (pg.error, Exception) as e:  # pylint: disable=broad-exception-caught
+        print(
+            "Error: Cannot initialize graphics. This game requires a "
+            "graphical environment.",
+            file=sys.stderr,
+        )
         print(f"Details: {e}", file=sys.stderr)
         return 1
 
@@ -5081,7 +5139,7 @@ def main(argv: List[str] = None):
             logger.info("Game interrupted by user")
         return 130
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(f"Fatal error: {e}", file=sys.stderr)
         if logger:
             logger.error(f"Fatal error: {e}", exc_info=True)
