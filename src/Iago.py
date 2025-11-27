@@ -795,6 +795,9 @@ class Settings:
 
     def save(self):
         try:
+            # Ensure config directory exists
+            os.makedirs(os.path.dirname(SETTINGS_FILE), exist_ok=True)
+
             # Convert to dict manually to handle complex objects
             data = self.__dict__.copy()
             if self.stats:
@@ -3214,6 +3217,9 @@ class GameExporter:
             content = GameExporter.export_to_json(game)
 
         try:
+            # Ensure data directory exists
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(content)
             game.ui.status = f"Game exported to {filename}"

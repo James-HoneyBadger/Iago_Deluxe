@@ -79,16 +79,6 @@ python -m http.server 8000
 # Then open http://localhost:8000 in your browser
 ```
 
-### Windows 2000 Version
-**Status:** Not implemented due to technical infeasibility  
-
-**Challenges:**
-- Windows 2000 end-of-life (2010) with no modern Python/Pygame support
-- Security and compatibility issues with ancient toolchains
-- Limited hardware capabilities
-
-**Recommendation:** Use the web version for legacy system compatibility.
-
 ## 📁 Project Structure
 
 ```
@@ -101,7 +91,7 @@ Iago_Deluxe/
 │
 ├── src/                     # Source code
 │   ├── __init__.py
-│   ├── Iago.py             # Main game implementation (5000+ lines)
+│   ├── Iago.py             # Main game implementation (5300+ lines)
 │   ├── config.py           # Configuration constants and settings
 │   ├── logger.py           # Logging system with file rotation
 │   └── error_handling.py   # Custom exceptions and validation
@@ -119,18 +109,20 @@ Iago_Deluxe/
 │   ├── README.md           # Documentation index
 │   ├── DEVELOPMENT.md      # Architecture and technical details
 │   ├── QUICK_REFERENCE.md  # Command reference and shortcuts
-│   ├── CHANGELOG.md        # Version history and changes
 │   ├── AI_LEVELS_VERIFICATION.md  # AI testing methodology
 │   └── USER_GUIDE.md       # Comprehensive user manual
 │
 ├── assets/                  # Game assets
 │   └── reversi-icon.png    # Application icon
 │
-├── config/                  # Runtime configuration
-│   └── reversi-settings.json  # User preferences (auto-generated)
+├── config/                  # Runtime configuration (auto-created)
+│   └── iago-settings.json   # User preferences (auto-generated)
 │
-└── data/                    # Game data
-    └── *.pgn, *.json       # Saved games (auto-generated)
+├── data/                    # Game data (auto-created)
+│   └── iago_game_*.pgn, *.json  # Saved games (auto-generated)
+│
+├── web_version/             # Web browser version
+│   └── index.html          # Complete web-based game
 ```
 
 ## 🎯 Game Controls

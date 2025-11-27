@@ -13,7 +13,7 @@ Welcome to the comprehensive documentation for Iago_Deluxe, a feature-rich imple
 - **[CONTRIBUTING.md](../CONTRIBUTING.md)** - Contribution guidelines and code standards
 
 ### Implementation Details
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and feature changes
+- **[CHANGELOG.md](../CHANGELOG.md)** - Version history and feature changes
 - **[USER_GUIDE.md](USER_GUIDE.md)** - Comprehensive user manual
 
 ### Testing & Verification
@@ -47,7 +47,7 @@ Iago_Deluxe/
 ├── CONTRIBUTING.md              # How to contribute
 │
 ├── src/                         # Source code
-│   ├── Iago.py              # Main game (5100+ lines)
+│   ├── Iago.py              # Main game (5300+ lines)
 │   ├── config.py               # Configuration
 │   ├── logger.py               # Logging system
 │   └── error_handling.py       # Error handling

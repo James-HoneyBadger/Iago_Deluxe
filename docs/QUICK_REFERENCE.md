@@ -4,8 +4,7 @@
 
 ### Configuration Files
 ```
-config/
-└── reversi-settings.json    # Your game preferences (auto-created)
+config/iago-settings.json   # Your game preferences (auto-created)
 ```
 
 ### Game Data
@@ -17,7 +16,7 @@ data/
 
 ### Logs
 ```
-iago.log                  # Game logs (auto-rotated at 10MB)
+iago.log                   # Game logs (auto-rotated at 10MB)
 ```
 
 ## 🚀 Quick Start Commands
