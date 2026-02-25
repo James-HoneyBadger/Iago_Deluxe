@@ -8,7 +8,12 @@ in a separate, smaller module.
 
 import pygame as pg
 import pygame.gfxdraw
-from typing import List, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+
+if TYPE_CHECKING:
+    from board import Board
+    from ai import AI as AIType
+    from config import GameStats
 
 from config import (
     EMPTY, PLAYER_BLACK, PLAYER_WHITE,
@@ -28,6 +33,42 @@ class RenderMixin:
     No ``__init__`` is defined here; the methods rely on attributes created by
     ``Game.__init__`` (``self.screen``, ``self.board``, ``self.font``, etc.).
     """
+
+    # ------------------------------------------------------------------
+    # Attribute declarations for the type-checker.
+    # These are all set by Game.__init__; they are listed here so that mypy
+    # can resolve them when type-checking this mixin in isolation.
+    # ------------------------------------------------------------------
+    if TYPE_CHECKING:
+        screen: pg.Surface
+        board: "Board"
+        ai: "AIType"
+        stats: "GameStats"
+        font: pg.font.Font
+        small_font: pg.font.Font
+        tiny_font: pg.font.Font
+        board_size: int
+        board_top: int
+        board_px: int
+        screen_width: int
+        screen_height: int
+        ui_height: int
+        game_mode: str
+        player_color: int
+        show_valid_moves: bool
+        menu_open: bool
+        ai_thinking: bool
+        replay_mode: bool
+        replay_step: int
+        replay_moves: List[Any]
+        last_move: Optional[Tuple[int, int]]
+        hover_cell: Optional[Tuple[int, int]]
+        hint_move: Optional[Tuple[int, int]]
+        notation_log: List[Any]
+        _menubar_rects: Dict[str, Any]
+        _menu_rects: Dict[str, Any]
+
+        def get_animation_scale(self, row: int, col: int) -> float: ...
 
     # ------------------------------------------------------------------
     # Top-level draw orchestrator
