@@ -1,8 +1,11 @@
 {
-  "games_played": 1,
-  "games_won": 1,
+  "games_played": 5,
+  "games_won": 5,
   "games_lost": 0,
   "games_drawn": 0,
-  "total_moves": 10,
-  "best_score": 2
+  "total_moves": 191,
+  "best_score": 48,
+  "win_streak": 1,
+  "loss_streak": 0,
+  "current_streak": 1
 }

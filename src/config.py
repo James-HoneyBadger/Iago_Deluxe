@@ -1,37 +1,55 @@
 """
-Configuration and constants for Iago Deluxe
+config.py – Constants, colours, and dataclasses for Iago Deluxe.
+
+All magic numbers live here so the rest of the codebase stays clean.
+Colour tuples are (R, G, B).  Layout measurements are in pixels.
 """
 
 from dataclasses import dataclass, asdict
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from enum import Enum
 
-# Constants
+# ── Layout ──────────────────────────────────────────────────────────────────
 DEFAULT_BOARD_SIZE = 8
-CELL_SIZE = 60
-MARGIN = 20
-UI_HEIGHT = 120
-ANIMATION_SPEED = 0.3
+CELL_SIZE = 60          # pixels per board cell
+MARGIN = 20             # pixels of blank space around the board
+MENUBAR_HEIGHT = 32     # height of the top menu bar strip
+UI_HEIGHT = 120         # height of the bottom info/status panel
+HISTORY_WIDTH = 165     # width of the move-history sidebar
+ANIMATION_SPEED = 0.3   # seconds for a piece placement / flip animation
 
-# Colors
+# ── Named colours (kept for THEMES dict and test_settings.py) ────────────────
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GREEN = (34, 139, 34)
-DARK_GREEN = (0, 100, 0)
+GREEN = (0, 128, 0)         # board cell colour
+DARK_GREEN = (0, 100, 0)    # board grid lines
 GRAY = (128, 128, 128)
 LIGHT_GRAY = (200, 200, 200)
-RED = (255, 0, 0)
+RED = (220, 60, 60)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 PURPLE = (128, 0, 128)
 CYAN = (0, 255, 255)
 
-# Game pieces
+# ── UI palette ───────────────────────────────────────────────────────────────
+BG_DARK = (28, 28, 28)          # window background / UI panel fill
+TEXT_PRIMARY = (235, 235, 235)  # main UI text
+TEXT_DIM = (160, 160, 160)      # secondary / instruction text
+TEXT_ACCENT = (255, 195, 50)    # highlights, game-over banner, AI indicator
+HINT_DOT = (100, 200, 255)      # valid-move dots (legacy; currently unused)
+HISTORY_BG = (38, 38, 44)       # sidebar background
+WIN_BAR_BLACK = (55, 55, 65)    # win-probability bar: Black's share
+WIN_BAR_WHITE = (215, 215, 210) # win-probability bar: White's share
+WIN_BAR_BG = (75, 75, 75)       # win-probability bar background track
+HOVER_FLIP = (180, 230, 180)    # tint colour for hover-preview flip cells
+LAST_MOVE_RING = (255, 215, 60) # gold ring drawn on the last-played cell
+
+# ── Game-piece constants ──────────────────────────────────────────────────────
 EMPTY = 0
 PLAYER_BLACK = 1
 PLAYER_WHITE = 2
 
-# Themes
+# ── Themes (board + accent colour palettes) ──────────────────────────────────
 THEMES = {
     "Classic": {
         "board": (34, 139, 34),
@@ -77,7 +95,8 @@ class Difficulty(Enum):
 
 @dataclass
 class GameSettings:
-    """Game settings that persist between sessions"""
+    """Persistent user preferences (currently used by test_settings; UI uses
+    in-game state directly).  Fields mirror the options exposed in draw_menu()."""
 
     theme: str = "Classic"
     sound_enabled: bool = True
@@ -90,7 +109,9 @@ class GameSettings:
 
 @dataclass
 class GameStats:
-    """Player statistics"""
+    """Cumulative player statistics, persisted to stats.json between sessions.
+    ``current_streak`` is positive for a win streak and negative for a loss streak.
+    """
 
     games_played: int = 0
     games_won: int = 0
@@ -98,11 +119,16 @@ class GameStats:
     games_drawn: int = 0
     total_moves: int = 0
     best_score: int = 0
+    win_streak: int = 0
+    loss_streak: int = 0
+    current_streak: int = 0   # positive = win streak, negative = loss streak
 
 
 @dataclass
 class Animation:
-    """Represents a piece placement or flip animation"""
+    """One in-flight piece animation (placement scale-in or flip pulse).
+    ``start_time`` is absolute seconds from ``pg.time.get_ticks() / 1000``.
+    """
 
     row: int
     col: int
@@ -116,7 +142,10 @@ class Animation:
 
 @dataclass
 class GameState:
-    """Complete game state for saving/loading"""
+    """Snapshot of a complete board position used by undo/redo and save/load.
+    ``winner`` is None while the game is in progress, 0 for a draw, or the
+    PLAYER_* constant of the winning side.
+    """
 
     board_grid: List[List[int]]
     current_player: int
@@ -124,5 +153,5 @@ class GameState:
     black_score: int
     white_score: int
     game_over: bool
-    winner: int
+    winner: Optional[int]
     settings: Dict[str, Any]
