@@ -49,6 +49,20 @@ EMPTY = 0
 PLAYER_BLACK = 1
 PLAYER_WHITE = 2
 
+# ── Game mode identifiers ─────────────────────────────────────────────────────
+MODE_HvAI = "hvai"  # Human vs AI
+MODE_HvH = "hvh"   # Human vs Human (local two-player)
+MODE_AvA = "ava"   # AI vs AI (demo / spectator)
+MODES = [MODE_HvAI, MODE_HvH, MODE_AvA]
+MODE_LABELS = {
+    MODE_HvAI: "Human vs AI",
+    MODE_HvH: "2-Player",
+    MODE_AvA: "AI vs AI",
+}
+
+# Algebraic notation column letters (a–h)
+_COL_LETTERS = "abcdefgh"
+
 # ── Themes (board + accent colour palettes) ──────────────────────────────────
 THEMES = {
     "Classic": {

@@ -75,7 +75,7 @@ def test_switch_player_double_returns_to_original():
 # ===========================================================================
 
 def test_would_flip_true_in_valid_direction():
-    """_would_flip should return True when opponent pieces lie between two own pieces."""
+    """_would_flip returns True when opponent pieces lie between two own pieces."""
     board = Board()
     # Standard opening: BLACK at (3,4) and (4,3); WHITE at (3,3) and (4,4)
     # BLACK at (2,3) goes south (dr=1,dc=0): (3,3) WHITE, (4,3) BLACK → flip
