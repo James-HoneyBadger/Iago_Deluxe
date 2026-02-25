@@ -10,83 +10,47 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.7, 3.8, 3.9, '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11', '3.12']
 
     steps:
-    - uses: actions/checkout@v3
-    
+    - uses: actions/checkout@v4
+
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
-    - name: Test import
+        pip install pytest
+
+    - name: Run tests
       run: |
-        python -c "import pygame; print('Pygame version:', pygame.version.ver)"
-    
-    - name: Syntax check
-      run: |
-        python -m py_compile Iago.py
-    
-    - name: Test basic functionality (non-GUI)
-      run: |
-        python -c "
-        import sys
-        sys.path.insert(0, '.')
-        
-        # Test imports without initializing pygame display
-        try:
-            # Mock pygame display to avoid GUI initialization in CI
-            import pygame
-            pygame.display.set_mode = lambda *args, **kwargs: None
-            pygame.display.flip = lambda: None
-            pygame.display.set_caption = lambda *args: None
-            pygame.init = lambda: None
-            
-            # Test core game logic
-            exec(open('Iago.py').read().split('if __name__')[0])
-            print('✅ Core game logic imports successfully')
-            
-            # Test basic classes
-            board = Board()
-            settings = Settings()
-            print('✅ Basic classes instantiate successfully')
-            
-        except Exception as e:
-            print(f'❌ Error: {e}')
-            sys.exit(1)
-        "
+        python -m pytest tests/ -v --tb=short
 
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
+    - uses: actions/checkout@v4
+
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
-    
+        python-version: '3.11'
+
     - name: Install linting tools
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 black
-    
+        pip install flake8
+
     - name: Lint with flake8
       run: |
-        # Stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Exit-zero treats all errors as warnings
-        flake8 . --count --exit-zero --max-complexity=15 --max-line-length=120 --statistics
-    
-    - name: Check formatting with black
-      run: |
-        black --check --diff .
-      continue-on-error: true
+        # Fail on syntax errors or undefined names
+        flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Report style issues as warnings only
+        flake8 src/ tests/ --count --exit-zero --max-complexity=15 --max-line-length=120 --statistics
