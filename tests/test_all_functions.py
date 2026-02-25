@@ -7,6 +7,7 @@ test_comprehensive.py suites without duplicating them.
 
 import sys
 import os
+import time as _time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -77,7 +78,7 @@ def test_would_flip_true_in_valid_direction():
     """_would_flip should return True when opponent pieces lie between two own pieces."""
     board = Board()
     # Standard opening: BLACK at (3,4) and (4,3); WHITE at (3,3) and (4,4)
-    # BLACK playing (2,3) goes south (dr=1,dc=0): (3,3) is WHITE, (4,3) is BLACK → flip
+    # BLACK at (2,3) goes south (dr=1,dc=0): (3,3) WHITE, (4,3) BLACK → flip
     assert board._would_flip(2, 3, 1, 0, PLAYER_BLACK) is True
 
 
@@ -119,7 +120,7 @@ def test_get_flips_no_mutation():
 
 def test_get_flips_invalid_move_returns_empty():
     board = Board()
-    assert board.get_flips(0, 0, PLAYER_BLACK) == []
+    assert not board.get_flips(0, 0, PLAYER_BLACK)
 
 
 def test_get_flips_matches_make_move():
@@ -148,7 +149,7 @@ def test_get_flips_direction_empty_when_no_flip():
     board = Board()
     # Direction (-1,0) from (2,3): (1,3) is EMPTY → nothing to flip
     result = board._get_flips_direction(2, 3, -1, 0, PLAYER_BLACK)
-    assert result == []
+    assert not result
 
 
 # ===========================================================================
@@ -172,7 +173,7 @@ def test_flip_direction_no_flip_when_empty_gap():
     board = Board()
     # (0,0) goes right; (0,1) is EMPTY → nothing flipped
     flipped = board._flip_direction(0, 0, 0, 1, PLAYER_BLACK)
-    assert flipped == []
+    assert not flipped
 
 
 # ===========================================================================
@@ -182,7 +183,7 @@ def test_flip_direction_no_flip_when_empty_gap():
 def test_make_move_flips_in_multiple_directions():
     """A move that flanks pieces returns all flipped cells."""
     board = Board()
-    # BLACK plays (2,3): flips (3,3) south → board now has BLACK at (2,3),(3,3),(3,4),(4,3)
+    # BLACK plays (2,3): flips (3,3) south; board gains BLACK at (2,3),(3,3),(4,3)
     board.make_move(2, 3, PLAYER_BLACK)
     # WHITE plays (2,2): direction SE (1,1) flanks (3,3) (BLACK) with (4,4) (WHITE)
     assert board.is_valid_move(2, 2, PLAYER_WHITE)
@@ -225,7 +226,7 @@ def test_reset_log_clears_move_history():
     ai.record_move(PLAYER_WHITE, 2, 4)
     assert len(ai._move_log) == 2
     ai.reset_log()
-    assert ai._move_log == []
+    assert not ai._move_log
 
 
 def test_reset_log_then_record():
@@ -539,7 +540,6 @@ def test_minimax_depth_zero_returns_evaluation():
     """At depth 0 minimax should immediately return the board evaluation."""
     ai = AI()
     board = Board()
-    import time as _time
     score = ai._minimax_alpha_beta(board, 0, True, -float("inf"), float("inf"),
                                    _time.time(), 999.0)
     assert isinstance(score, (int, float))
@@ -547,7 +547,6 @@ def test_minimax_depth_zero_returns_evaluation():
 
 def test_minimax_respects_time_limit():
     """Minimax should bail out when time limit is already exceeded."""
-    import time as _time
     ai = AI()
     board = Board()
     past = _time.time() - 1000  # start time very far in the past

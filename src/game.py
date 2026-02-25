@@ -3,7 +3,8 @@ game.py – Main game class for Iago Deluxe.
 
 Responsibilities:
   * Pygame window setup, main loop (run / handle_events / update / draw)
-  * Input routing: mouse clicks on the board, menu bar, options overlay; keyboard shortcuts
+  * Input routing: mouse clicks on the board, menu bar, options overlay;
+    keyboard shortcuts
   * Rendering: board, pieces (3D shaded), valid-move hints, win-probability bar,
     move-history sidebar, top menu bar, options overlay
   * Game logic coordination: delegating board moves to Board, AI turns to AI
@@ -23,7 +24,8 @@ from board import Board
 from ai import AI, MAX_DIFFICULTY, DIFFICULTY_LEVELS
 from config import (
     EMPTY, PLAYER_BLACK, PLAYER_WHITE,
-    DEFAULT_BOARD_SIZE, CELL_SIZE, MARGIN, MENUBAR_HEIGHT, UI_HEIGHT, HISTORY_WIDTH, ANIMATION_SPEED,
+    DEFAULT_BOARD_SIZE, CELL_SIZE, MARGIN, MENUBAR_HEIGHT,
+    UI_HEIGHT, HISTORY_WIDTH, ANIMATION_SPEED,
     BLACK, GREEN, DARK_GREEN,
     BG_DARK, TEXT_PRIMARY, TEXT_DIM, TEXT_ACCENT, HINT_DOT,
     HISTORY_BG, WIN_BAR_BLACK, WIN_BAR_WHITE, WIN_BAR_BG, HOVER_FLIP, LAST_MOVE_RING,
@@ -32,8 +34,8 @@ from config import (
 
 # ── Game mode constants ───────────────────────────────────────────────────────
 MODE_HvAI = "hvai"  # Human vs AI
-MODE_HvH  = "hvh"   # Human vs Human (local two-player)
-MODE_AvA  = "ava"   # AI vs AI (demo / spectator)
+MODE_HvH = "hvh"   # Human vs Human (local two-player)
+MODE_AvA = "ava"   # AI vs AI (demo / spectator)
 MODES = [MODE_HvAI, MODE_HvH, MODE_AvA]
 MODE_LABELS = {
     MODE_HvAI: "Human vs AI",
@@ -63,7 +65,8 @@ class Game:
         self.board_px = self.board_size * self.cell_size
 
         self.screen_width = self.board_px + 2 * self.margin + HISTORY_WIDTH
-        self.board_top = MENUBAR_HEIGHT + self.margin   # pixel Y where board row-0 starts
+        # pixel Y where board row-0 starts
+        self.board_top = MENUBAR_HEIGHT + self.margin
         self.screen_height = (
             MENUBAR_HEIGHT + self.board_px + 2 * self.margin + self.ui_height
         )
@@ -121,8 +124,10 @@ class Game:
 
         # Options menu
         self.menu_open = False
-        self._menu_rects: dict = {}     # {key: [(Rect, index), ...]} – rebuilt each frame
-        self._menubar_rects: dict = {}  # {key: Rect} – rebuilt each frame
+        # {key: [(Rect, index), ...]} – rebuilt each frame
+        self._menu_rects: dict = {}
+        # {key: Rect} – rebuilt each frame
+        self._menubar_rects: dict = {}
 
         # Hint: best-move recommendation (recomputed after each move)
         self.hint_move: Optional[Tuple[int, int]] = None
@@ -744,7 +749,8 @@ class Game:
         # Row numbers (1-8) to the left of the board
         for row in range(self.board_size):
             lbl = self.tiny_font.render(str(row + 1), True, TEXT_DIM)
-            ly = self.board_top + row * CELL_SIZE + CELL_SIZE // 2 - lbl.get_height() // 2
+            ly = (self.board_top + row * CELL_SIZE
+                  + CELL_SIZE // 2 - lbl.get_height() // 2)
             self.screen.blit(lbl, (4, ly))
 
     def draw_pieces(self):
@@ -843,7 +849,7 @@ class Game:
         for row, col in valid_moves:
             cx = MARGIN + col * CELL_SIZE + CELL_SIZE // 2
             cy = self.board_top + row * CELL_SIZE + CELL_SIZE // 2
-            is_best = (self.hint_move == (row, col))
+            is_best = self.hint_move == (row, col)
             if is_best:
                 # Gold outer glow ring
                 pg.draw.circle(self.screen, (200, 160, 0), (cx, cy), 13)
@@ -874,13 +880,15 @@ class Game:
         ui_y = self.board_top + self.board_px + 8
 
         # Dark panel
-        panel_rect = (0, self.board_top + self.board_px, self.screen_width, self.ui_height)
+        panel_rect = (
+            0, self.board_top + self.board_px, self.screen_width, self.ui_height
+        )
         pg.draw.rect(self.screen, BG_DARK, panel_rect)
 
         # Thin separator line
+        sep_y = self.board_top + self.board_px
         pg.draw.line(self.screen, (60, 60, 60),
-                     (0, self.board_top + self.board_px),
-                     (self.board_top + self.board_px, self.board_top + self.board_px), 1)
+                     (0, sep_y), (self.screen_width, sep_y), 1)
 
         # ── Row 1: score + mode ──────────────────────────────────────────
         black_score, white_score = self.board.get_score()
@@ -1074,7 +1082,7 @@ class Game:
 
     @staticmethod
     def _cell_to_notation(row: int, col: int) -> str:
-        """Convert a (row, col) board coordinate to algebraic notation, e.g. (1,4) → 'e2'."""
+        """Convert (row, col) to algebraic notation, e.g. (1, 4) → 'e2'."""
         return f"{_COL_LETTERS[col]}{row + 1}"
 
     def draw_history_sidebar(self):
@@ -1269,7 +1277,7 @@ class Game:
             for i, ch in enumerate(choices):
                 bx = btn_x0 + i * (btn_w + 4)
                 rect = pg.Rect(bx, cy, btn_w, 28)
-                active = (i == active_idx)
+                active = i == active_idx
                 if not enabled:
                     bg, tc = (48, 48, 54), (72, 72, 80)
                 elif active:

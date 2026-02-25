@@ -38,11 +38,11 @@ TEXT_DIM = (160, 160, 160)      # secondary / instruction text
 TEXT_ACCENT = (255, 195, 50)    # highlights, game-over banner, AI indicator
 HINT_DOT = (100, 200, 255)      # valid-move dots (legacy; currently unused)
 HISTORY_BG = (38, 38, 44)       # sidebar background
-WIN_BAR_BLACK = (55, 55, 65)    # win-probability bar: Black's share
-WIN_BAR_WHITE = (215, 215, 210) # win-probability bar: White's share
-WIN_BAR_BG = (75, 75, 75)       # win-probability bar background track
-HOVER_FLIP = (180, 230, 180)    # tint colour for hover-preview flip cells
-LAST_MOVE_RING = (255, 215, 60) # gold ring drawn on the last-played cell
+WIN_BAR_BLACK = (55, 55, 65)       # win-probability bar: Black's share
+WIN_BAR_WHITE = (215, 215, 210)   # win-probability bar: White's share
+WIN_BAR_BG = (75, 75, 75)         # win-probability bar background track
+HOVER_FLIP = (180, 230, 180)      # tint colour for hover-preview flip cells
+LAST_MOVE_RING = (255, 215, 60)   # gold ring drawn on the last-played cell
 
 # ── Game-piece constants ──────────────────────────────────────────────────────
 EMPTY = 0
