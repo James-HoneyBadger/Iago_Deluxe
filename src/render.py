@@ -10,11 +10,7 @@ import pygame as pg
 import pygame.gfxdraw
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
-if TYPE_CHECKING:
-    from board import Board
-    from ai import AI as AIType
-    from config import GameStats
-
+from ai import MAX_DIFFICULTY, DIFFICULTY_LEVELS
 from config import (
     EMPTY, PLAYER_BLACK, PLAYER_WHITE,
     MARGIN, MENUBAR_HEIGHT, CELL_SIZE, HISTORY_WIDTH,
@@ -24,7 +20,11 @@ from config import (
     HOVER_FLIP, LAST_MOVE_RING,
     MODE_HvAI, MODES, MODE_LABELS, _COL_LETTERS,
 )
-from ai import MAX_DIFFICULTY, DIFFICULTY_LEVELS
+
+if TYPE_CHECKING:
+    from board import Board
+    from ai import AI as AIType
+    from config import GameStats
 
 
 class RenderMixin:
@@ -68,7 +68,8 @@ class RenderMixin:
         _menubar_rects: Dict[str, Any]
         _menu_rects: Dict[str, Any]
 
-        def get_animation_scale(self, row: int, col: int) -> float: ...
+        def get_animation_scale(self, row: int, col: int) -> float:
+            return 0.0
 
     # ------------------------------------------------------------------
     # Top-level draw orchestrator
