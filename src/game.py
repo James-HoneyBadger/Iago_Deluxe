@@ -13,7 +13,6 @@ Responsibilities:
 """
 
 import pygame as pg
-import pygame.gfxdraw
 import sys
 import math
 import json

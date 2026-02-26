@@ -7,7 +7,6 @@ in a separate, smaller module.
 """
 
 import pygame as pg
-import pygame.gfxdraw
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
 from ai import MAX_DIFFICULTY, DIFFICULTY_LEVELS
@@ -199,12 +198,9 @@ class RenderMixin:
             dot_y = cy - int(radius * 0.38)
             pg.draw.circle(surf, shine2, (dot_x, dot_y), dot_r)
 
-        # 6 – anti-aliased rim outline
-        try:
-            pg.gfxdraw.aacircle(surf, cx, cy, radius, rim)
-            pg.gfxdraw.aacircle(surf, cx, cy, radius - 1, rim)
-        except AttributeError:
-            pg.draw.circle(surf, rim, (cx, cy), radius, 1)
+        # 6 – rim outline (two concentric strokes for a crisp edge)
+        pg.draw.circle(surf, rim, (cx, cy), radius, 1)
+        pg.draw.circle(surf, rim, (cx, cy), max(1, radius - 1), 1)
 
     # ------------------------------------------------------------------
     # Valid-move indicators and hover preview
